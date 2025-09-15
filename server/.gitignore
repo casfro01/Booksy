@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 # app settings ig
 appsettings.json
+
+scaffoldCommand.sh
