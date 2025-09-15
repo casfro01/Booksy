@@ -29,6 +29,8 @@ public class Program
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
+
+        services.AddCors();
     }
     public static void Main(string[] args)
     {
@@ -39,6 +41,8 @@ public class Program
         app.MapControllers();
         app.UseOpenApi();
         app.UseSwaggerUi();
+        
+        app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
         // config færdig her
         app.GenerateApiClientsFromOpenApi("/../client/src/LibAPI.ts").GetAwaiter().GetResult();
