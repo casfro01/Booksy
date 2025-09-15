@@ -25,8 +25,14 @@ public class BookController(IService<BaseBookRequest, BaseBookResponse> bookServ
         throw new NotImplementedException();
     }
     
-    [HttpPut(nameof(CreateBook))]
+    [HttpPut(nameof(UpdateBook))]
     public Book UpdateBook([FromBody] UpdateBookDto dto)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpDelete(nameof(DeleteBook))]
+    public Book DeleteBook([FromBody] string id)
     {
         throw new NotImplementedException();
     }
