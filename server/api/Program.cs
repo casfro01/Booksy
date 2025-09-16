@@ -4,6 +4,8 @@ using DefaultNamespace;
 using Microsoft.EntityFrameworkCore;
 using services;
 using services.Abstractions;
+using services.DTOs.Request;
+using services.DTOs.Response;
 
 namespace api;
 public class Program
@@ -19,7 +21,7 @@ public class Program
         });
         services.AddOpenApiDocument();
 
-        services.AddScoped<IService<BaseBookRequest, BaseBookResponse>, BookService>();
+        services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
         
         services.AddProblemDetails();
 

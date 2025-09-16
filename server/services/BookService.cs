@@ -1,9 +1,11 @@
 ﻿using api.Controllers;
 using services.Abstractions;
+using services.DTOs.Request;
+using services.DTOs.Response;
 
 namespace services;
 
-public class BookService : IService<BaseBookRequest, BaseBookResponse>
+public class BookService : IService<BaseBookResponse, CreateBookDto, UpdateBookDto>
 {
     public List<BaseBookResponse> Get()
     {
@@ -15,17 +17,12 @@ public class BookService : IService<BaseBookRequest, BaseBookResponse>
         throw new NotImplementedException();
     }
 
-    public BaseBookResponse Create(BaseBookRequest request)
+    public BaseBookResponse Create(CreateBookDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public BaseBookResponse Update(BaseBookRequest request)
-    {
-        throw new NotImplementedException();
-    }
-
-    public BaseBookResponse Delete(BaseBookRequest request)
+    public BaseBookResponse Update(UpdateBookDto dto)
     {
         throw new NotImplementedException();
     }

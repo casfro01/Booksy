@@ -1,5 +1,7 @@
-﻿namespace api.Controllers;
+﻿using api.Controllers;
 
-public record CreateBookDto : BaseBookRequest
+namespace services.DTOs.Request;
+
+public record CreateBookDto
 {
 }

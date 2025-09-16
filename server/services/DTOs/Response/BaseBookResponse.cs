@@ -1,4 +1,4 @@
-﻿namespace api.Controllers;
+﻿namespace services.DTOs.Response;
 
 public abstract record BaseBookResponse
 {

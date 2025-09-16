@@ -1,11 +1,13 @@
 ﻿using dataaccess;
 using Microsoft.AspNetCore.Mvc;
 using services.Abstractions;
+using services.DTOs.Request;
+using services.DTOs.Response;
 
 namespace api.Controllers;
 
 [ApiController]
-public class BookController(IService<BaseBookRequest, BaseBookResponse> bookService) : ControllerBase
+public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBookDto> bookService) : ControllerBase
 {
     [HttpGet(nameof(GetBooks))]
     public List<Book> GetBooks()
