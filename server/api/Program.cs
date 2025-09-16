@@ -1,6 +1,11 @@
 using System.Text.Json.Serialization;
+using api.Controllers;
 using DefaultNamespace;
 using Microsoft.EntityFrameworkCore;
+using services;
+using services.Abstractions;
+using services.DTOs.Request;
+using services.DTOs.Response;
 
 namespace api;
 public class Program
@@ -15,7 +20,9 @@ public class Program
             return appOptions;
         });
         services.AddOpenApiDocument();
-        // add scoped services
+
+        services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
+        
         services.AddProblemDetails();
 
         /* dbContext

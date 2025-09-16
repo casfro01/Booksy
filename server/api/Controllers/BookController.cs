@@ -1,0 +1,41 @@
+﻿using dataaccess;
+using Microsoft.AspNetCore.Mvc;
+using services.Abstractions;
+using services.DTOs.Request;
+using services.DTOs.Response;
+
+namespace api.Controllers;
+
+[ApiController]
+public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBookDto> bookService) : ControllerBase
+{
+    [HttpGet(nameof(GetBooks))]
+    public List<Book> GetBooks()
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpGet(nameof(GetBook))]
+    public Book GetBook(string id)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpPost(nameof(CreateBook))]
+    public Book CreateBook([FromBody] CreateBookDto dto)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpPut(nameof(UpdateBook))]
+    public Book UpdateBook([FromBody] UpdateBookDto dto)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpDelete(nameof(DeleteBook))]
+    public Book DeleteBook([FromBody] string id)
+    {
+        throw new NotImplementedException();
+    }
+}
