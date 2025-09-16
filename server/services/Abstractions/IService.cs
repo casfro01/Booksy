@@ -7,7 +7,7 @@
 /// <typeparam name="TRes">Response type</typeparam>
 /// <typeparam name="TCreate">Create type</typeparam>
 /// <typeparam name="TUpdate">Update type</typeparam>
-public interface IService<TRes, TCreate, TUpdate>
+public interface IService<TRes, in TCreate, in TUpdate>
 {
     public List<TRes> Get();
     public TRes Get(string id);
