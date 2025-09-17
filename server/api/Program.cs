@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using api.Controllers;
+using dataaccess;
 using DefaultNamespace;
 using Microsoft.EntityFrameworkCore;
 using services;
@@ -24,13 +25,11 @@ public class Program
         services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
         
         services.AddProblemDetails();
-
-        /* dbContext
-        services.AddDbContext<DbContext>((services, options) =>
+        
+        services.AddDbContext<MyDbContext>((services, options) =>
         {
             options.UseNpgsql(services.GetService<AppOptions>().DbConnectionString);
         });
-        */
 
         services.AddControllers().AddJsonOptions(options =>
         {
