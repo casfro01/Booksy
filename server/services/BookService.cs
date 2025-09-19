@@ -1,33 +1,59 @@
-﻿using api.Controllers;
+﻿using System.ComponentModel.DataAnnotations;
+using api.Controllers;
+using dataaccess;
 using services.Abstractions;
 using services.DTOs.Request;
 using services.DTOs.Response;
 
 namespace services;
 
-public class BookService : IService<BaseBookResponse, CreateBookDto, UpdateBookDto>
+public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBookDto, UpdateBookDto>
 {
-    public List<BaseBookResponse> Get()
+    public Task<List<BaseBookResponse>> Get()
     {
         throw new NotImplementedException();
     }
 
-    public BaseBookResponse Get(string id)
+    public Task<BaseBookResponse> Get(string id)
     {
         throw new NotImplementedException();
     }
 
-    public BaseBookResponse Create(CreateBookDto dto)
+    public async Task<BaseBookResponse> Create(CreateBookDto dto)
+    {
+        // validate the dto
+        // books can have the same title tho,
+        // because apparently it's not protected by copyright according to some sources
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        
+        // generate data
+        var authors = new List<Author>(); // TODO : find authors
+        var id = Guid.NewGuid().ToString();
+        var time = DateTime.Now;
+        
+        // create book
+        var book = new Book
+        {
+            Id = id,
+            Authors = authors,
+            Title = dto.Title,
+            Pages = dto.Pages,
+            Createdat = time,
+            Genreid = dto.Genreid
+        };
+        
+        // perform db actions
+        db.Books.Add(book); 
+        await db.SaveChangesAsync();
+        return new BaseBookResponse(book);
+    }
+
+    public Task<BaseBookResponse> Update(UpdateBookDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public BaseBookResponse Update(UpdateBookDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public BaseBookResponse Delete(string id)
+    public Task<BaseBookResponse> Delete(string id)
     {
         throw new NotImplementedException();
     }
