@@ -28,7 +28,7 @@ public class Program
         
         services.AddDbContext<MyDbContext>((services, options) =>
         {
-            options.UseNpgsql(services.GetService<AppOptions>().DbConnectionString);
+            options.UseNpgsql(services.GetRequiredService<AppOptions>().DbConnectionString);
         });
 
         services.AddControllers().AddJsonOptions(options =>

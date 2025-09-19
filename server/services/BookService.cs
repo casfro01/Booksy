@@ -29,7 +29,7 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
         // generate data
         var authors = new List<Author>(); // TODO : find authors
         var id = Guid.NewGuid().ToString();
-        var time = DateTime.Now;
+        var time = DateTime.UtcNow;
         
         // create book
         var book = new Book
