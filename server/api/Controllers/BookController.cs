@@ -22,9 +22,9 @@ public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBook
     }
     
     [HttpPost(nameof(CreateBook))]
-    public Book CreateBook([FromBody] CreateBookDto dto)
+    public async Task<BaseBookResponse> CreateBook([FromBody] CreateBookDto dto)
     {
-        throw new NotImplementedException();
+        return await bookService.Create(dto);
     }
     
     [HttpPut(nameof(UpdateBook))]
