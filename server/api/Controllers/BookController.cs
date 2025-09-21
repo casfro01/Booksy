@@ -10,15 +10,15 @@ namespace api.Controllers;
 public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBookDto> bookService) : ControllerBase
 {
     [HttpGet(nameof(GetBooks))]
-    public List<Book> GetBooks()
+    public async Task<List<BaseBookResponse>> GetBooks()
     {
-        throw new NotImplementedException();
+        return await bookService.Get();
     }
     
     [HttpGet(nameof(GetBook))]
-    public Book GetBook(string id)
+    public async Task<BaseBookResponse> GetBook(string id)
     {
-        throw new NotImplementedException();
+        return await bookService.Get(id);
     }
     
     [HttpPost(nameof(CreateBook))]

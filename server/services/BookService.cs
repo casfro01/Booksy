@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using api.Controllers;
 using dataaccess;
+using Microsoft.EntityFrameworkCore;
 using services.Abstractions;
 using services.DTOs.Request;
 using services.DTOs.Response;
@@ -11,12 +12,14 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
 {
     public Task<List<BaseBookResponse>> Get()
     {
-        throw new NotImplementedException();
+        return db.Books.Select(b => new BaseBookResponse(b)).ToListAsync();
     }
 
-    public Task<BaseBookResponse> Get(string id)
+    [Obsolete("Find in get books instead or cached books in client application, ig")]
+    public async Task<BaseBookResponse> Get(string id)
     {
-        throw new NotImplementedException();
+        var book = await db.Books.FirstOrDefaultAsync(b => b.Id == id);
+        return book == null ? throw new KeyNotFoundException("Book not found") : new BaseBookResponse(book);
     }
 
     public async Task<BaseBookResponse> Create(CreateBookDto dto)
