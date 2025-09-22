@@ -316,7 +316,7 @@ export class BookClient {
         return Promise.resolve<BaseBookResponse>(null as any);
     }
 
-    updateBook(dto: UpdateBookDto): Promise<Book> {
+    updateBook(dto: UpdateBookDto): Promise<BaseBookResponse> {
         let url_ = this.baseUrl + "/UpdateBook";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -336,13 +336,13 @@ export class BookClient {
         });
     }
 
-    protected processUpdateBook(response: Response): Promise<Book> {
+    protected processUpdateBook(response: Response): Promise<BaseBookResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Book;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBookResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -350,20 +350,20 @@ export class BookClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Book>(null as any);
+        return Promise.resolve<BaseBookResponse>(null as any);
     }
 
-    deleteBook(id: string): Promise<Book> {
-        let url_ = this.baseUrl + "/DeleteBook";
+    deleteBook(id: string | undefined): Promise<BaseBookResponse> {
+        let url_ = this.baseUrl + "/DeleteBook?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(id);
-
         let options_: RequestInit = {
-            body: content_,
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -373,13 +373,13 @@ export class BookClient {
         });
     }
 
-    protected processDeleteBook(response: Response): Promise<Book> {
+    protected processDeleteBook(response: Response): Promise<BaseBookResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Book;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBookResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -387,7 +387,7 @@ export class BookClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Book>(null as any);
+        return Promise.resolve<BaseBookResponse>(null as any);
     }
 }
 
@@ -416,6 +416,7 @@ export interface Book {
     pages?: number;
     createdat?: string | undefined;
     genreid?: string | undefined;
+    description?: string | undefined;
     genre?: Genre | undefined;
     authors?: Author[];
 }
@@ -437,6 +438,7 @@ export interface BaseBookResponse {
     pages?: number;
     createAt?: string | undefined;
     genreid?: string | undefined;
+    description?: string | undefined;
     authorsIDs?: string[];
 }
 
@@ -444,11 +446,17 @@ export interface CreateBookDto {
     title?: string;
     pages?: number;
     genreid?: string | undefined;
+    description?: string | undefined;
     authorsIDs?: string[];
 }
 
 export interface UpdateBookDto {
     id: string;
+    title?: string;
+    pages?: number;
+    genreid?: string | undefined;
+    description?: string | undefined;
+    authorsIDs?: string[];
 }
 
 export class ApiException extends Error {
