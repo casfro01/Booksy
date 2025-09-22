@@ -21,7 +21,8 @@ create table library.book
     title     text             not null,
     pages     int              not null,
     createdAt timestamp with time zone,
-    genreId   text             references library.genre (id) on delete set null
+    genreId   text             references library.genre (id) on delete set null,
+    description text           default ''
 );
 
 create table library.authorbookjunction

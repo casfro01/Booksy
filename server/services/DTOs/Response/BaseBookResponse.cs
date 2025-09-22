@@ -12,6 +12,8 @@ public sealed record BaseBookResponse
         Pages = b.Pages;
         CreateAt = b.Createdat;
         Genreid = b.Genreid;
+        Description = b.Description;
+        
 
         AuthorsIDs = b.Authors.Select(a => a.Id).ToList();
     }
@@ -25,6 +27,8 @@ public sealed record BaseBookResponse
     public DateTime? CreateAt { get; set; }
 
     public string? Genreid { get; set; }
+
+    public string? Description { get; set; }
 
     public ICollection<string> AuthorsIDs { get; set; } = new List<string>();
 }

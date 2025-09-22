@@ -4,8 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dataaccess;
 
-public partial class MyDbContext(DbContextOptions<MyDbContext> options) : DbContext(options)
+public partial class MyDbContext : DbContext
 {
+    public MyDbContext(DbContextOptions<MyDbContext> options)
+        : base(options)
+    {
+    }
+
     public virtual DbSet<Author> Authors { get; set; }
 
     public virtual DbSet<Book> Books { get; set; }
@@ -50,6 +55,9 @@ public partial class MyDbContext(DbContextOptions<MyDbContext> options) : DbCont
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat).HasColumnName("createdat");
+            entity.Property(e => e.Description)
+                .HasDefaultValueSql("''::text")
+                .HasColumnName("description");
             entity.Property(e => e.Genreid).HasColumnName("genreid");
             entity.Property(e => e.Pages).HasColumnName("pages");
             entity.Property(e => e.Title).HasColumnName("title");
