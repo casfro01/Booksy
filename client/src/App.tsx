@@ -4,6 +4,8 @@ import Homescreen from "./Pages/Homescreen.tsx";
 //import viteLogo from '/vite.svg'
 import CreateBook from './Pages/CreateBook.tsx';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
+import About from "./Pages/About.tsx";
+
 
 function App() {
   return (
@@ -24,6 +26,10 @@ function App() {
                 {
                     path: "/create-book", 
                     element: <CreateBook/>
+                },
+                {
+                    path: "/about",
+                    element: <About/>
                 }
                 ]
             }

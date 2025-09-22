@@ -46,6 +46,9 @@ export default function HomeScreen() {
                                     if (text === 'RENT A BOOK') {
                                         navigate('/create-book');
                                     }
+                                    else if (text === 'ABOUT BOOKSY') {
+                                        navigate('/about');
+                                    }
                             }}
                                 >
                                 {text}
