@@ -205,6 +205,7 @@ export interface BaseBookResponse {
     pages?: number;
     createAt?: string | undefined;
     genreid?: string | undefined;
+    description?: string | undefined;
     authorsIDs?: string[];
 }
 
@@ -212,6 +213,7 @@ export interface CreateBookDto {
     title?: string;
     pages?: number;
     genreid?: string | undefined;
+    description?: string | undefined;
     authorsIDs?: string[];
 }
 
@@ -221,6 +223,7 @@ export interface Book {
     pages?: number;
     createdat?: string | undefined;
     genreid?: string | undefined;
+    description?: string | undefined;
     genre?: Genre | undefined;
     authors?: Author[];
 }

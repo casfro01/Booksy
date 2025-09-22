@@ -42,6 +42,7 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
             Title = dto.Title,
             Pages = dto.Pages,
             Createdat = time,
+            Description = dto.Description,
             Genreid = dto.Genreid
         };
         

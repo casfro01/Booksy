@@ -12,5 +12,7 @@ public record CreateBookDto
 
     public string? Genreid { get; set; }
 
+    public string? Description { get; set; } = "";
+
     public ICollection<string> AuthorsIDs { get; set; } = new List<string>();
 }

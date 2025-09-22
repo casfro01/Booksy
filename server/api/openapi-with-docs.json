@@ -181,6 +181,10 @@
             "type": "string",
             "nullable": true
           },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
           "authorsIDs": {
             "type": "array",
             "items": {
@@ -204,6 +208,10 @@
             "minimum": 1.0
           },
           "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
           },
@@ -235,6 +243,10 @@
             "nullable": true
           },
           "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
           },

@@ -15,6 +15,8 @@ public partial class Book
 
     public string? Genreid { get; set; }
 
+    public string? Description { get; set; }
+
     public virtual Genre? Genre { get; set; }
 
     public virtual ICollection<Author> Authors { get; set; } = new List<Author>();
