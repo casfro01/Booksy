@@ -1,6 +1,6 @@
 ﻿namespace services.DTOs.Request;
 
 [Obsolete]
-public abstract record BaseBookRequest
+public abstract record BaseAuthorRequest
 {
 }
