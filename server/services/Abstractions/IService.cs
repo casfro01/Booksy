@@ -9,10 +9,10 @@
 /// <typeparam name="TUpdate">Update type</typeparam>
 public interface IService<TRes, in TCreate, in TUpdate>
 {
-    public List<TRes> Get();
-    public TRes Get(string id);
+    public Task<List<TRes>> Get();
+    public Task<TRes> Get(string id);
 
-    public TRes Create(TCreate request);
-    public TRes Update(TUpdate request);
-    public TRes Delete(string id);
+    public Task<TRes> Create(TCreate request);
+    public Task<TRes> Update(TUpdate request);
+    public Task<TRes> Delete(string id);
 }
