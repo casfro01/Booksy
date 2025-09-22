@@ -14,5 +14,5 @@ public record CreateBookDto
 
     public string? Description { get; set; } = "";
 
-    public ICollection<string> AuthorsIDs { get; set; } = new List<string>();
+    public List<string> AuthorsIDs { get; set; } = new List<string>();
 }
