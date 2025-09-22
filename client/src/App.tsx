@@ -1,12 +1,11 @@
 import Homescreen from "./Homescreen";
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+//import { useState } from 'react'
+//import reactLogo from './assets/react.svg'
+//import viteLogo from '/vite.svg'
+import CreateBook from './CreateBook';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
         <RouterProvider router={createBrowserRouter([
@@ -21,6 +20,10 @@ function App() {
                 {
                     path: "/books",
                     element: <p>books</p>
+                },
+                {
+                    path: "/create-book", 
+                    element: <CreateBook/>
                 }
                 ]
             }

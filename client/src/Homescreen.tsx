@@ -1,9 +1,12 @@
 ﻿import { Instagram, Play, Facebook } from 'lucide-react';
 import "./Homescreen.css"
+import { useNavigate } from 'react-router';
 
 export default function HomeScreen() {
-    return (
-        <div id='background'>
+        const navigate = useNavigate();
+
+        return (
+            <div id='background'>
             {/* Header */}
             <div className='header'>
                 <div className='header-content'>
@@ -38,7 +41,13 @@ export default function HomeScreen() {
                     {/* Button Grid */}
                     <div className='button-grid'>
                         {['ABOUT BOOKSY', 'CLASSES OFFERED', 'RENT A BOOK', 'SEND CHILD AWAY'].map((text) => (
-                            <button key={text} className='grid-button'>
+                            <button key={text} className='grid-button'
+                                onClick={() => {
+                                    if (text === 'RENT A BOOK') {
+                                        navigate('/create-book');
+                                    }
+                            }}
+                                >
                                 {text}
                             </button>
                         ))}
