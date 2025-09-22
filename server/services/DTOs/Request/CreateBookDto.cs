@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using api.Controllers;
 
 namespace services.DTOs.Request;
 

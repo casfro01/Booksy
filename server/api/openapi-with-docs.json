@@ -6,6 +6,155 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/GetAuthors": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "operationId": "Author_GetAuthors",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BaseAuthorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetAuthor": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "operationId": "Author_GetAuthor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseAuthorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreateAuthor": {
+      "post": {
+        "tags": [
+          "Author"
+        ],
+        "operationId": "Author_CreateAuthor",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthorDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseAuthorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateAuthor": {
+      "put": {
+        "tags": [
+          "Author"
+        ],
+        "operationId": "Author_UpdateAuthor",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAuthorDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DeleteAuthor": {
+      "delete": {
+        "tags": [
+          "Author"
+        ],
+        "operationId": "Author_DeleteAuthor",
+        "requestBody": {
+          "x-name": "id",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/GetBooks": {
       "get": {
         "tags": [
@@ -158,34 +307,22 @@
   },
   "components": {
     "schemas": {
-      "BaseBookResponse": {
+      "BaseAuthorResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "title": {
+          "name": {
             "type": "string"
-          },
-          "pages": {
-            "type": "integer",
-            "format": "int32"
           },
           "createAt": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
+          "booksIDs": {
             "type": "array",
             "items": {
               "type": "string"
@@ -193,32 +330,41 @@
           }
         }
       },
-      "CreateBookDto": {
+      "CreateAuthorDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "title": {
+          "name": {
             "type": "string",
             "minLength": 1
           },
-          "pages": {
-            "type": "integer",
-            "format": "int32",
-            "maximum": 2147483647.0,
-            "minimum": 1.0
-          },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
+          "booksIDs": {
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "Author": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
             }
           }
         }
@@ -243,10 +389,6 @@
             "nullable": true
           },
           "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
             "type": "string",
             "nullable": true
           },
@@ -289,25 +431,72 @@
           }
         }
       },
-      "Author": {
+      "UpdateAuthorDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      },
+      "BaseBookResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "name": {
+          "title": {
             "type": "string"
           },
-          "createdat": {
+          "pages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createAt": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "books": {
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorsIDs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Book"
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateBookDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0
+          },
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorsIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

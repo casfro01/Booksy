@@ -23,6 +23,7 @@ public class Program
         services.AddOpenApiDocument();
 
         services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
+        services.AddScoped<IService<BaseAuthorResponse, CreateAuthorDto, UpdateAuthorDto>, AuthorService>();
         
         services.AddProblemDetails();
         
