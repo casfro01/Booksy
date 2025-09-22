@@ -1,8 +1,8 @@
-import Homescreen from "./Homescreen";
+import Homescreen from "./Pages/Homescreen.tsx";
 //import { useState } from 'react'
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
-import CreateBook from './CreateBook';  
+import CreateBook from './Pages/CreateBook.tsx';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 
 function App() {

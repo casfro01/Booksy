@@ -1,5 +1,5 @@
 ﻿import { Instagram, Play, Facebook } from 'lucide-react';
-import "./Homescreen.css"
+import "../CSS/Homescreen.css"
 import { useNavigate } from 'react-router';
 
 export default function HomeScreen() {

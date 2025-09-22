@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { ArrowLeft, Book, User, FileText, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import './CreateBook.css';
+import '../CSS/CreateBook.css';
 
 interface FormData {
     title: string;
