@@ -74,8 +74,13 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
         return new BaseBookResponse(currentBook);
     }
 
-    public Task<BaseBookResponse> Delete(string id)
+    public async Task<BaseBookResponse> Delete(string id)
     {
-        throw new NotImplementedException();
+        var book = db.Books.First(b => b.Id == id);
+        db.Books.Remove(book);
+
+        await db.SaveChangesAsync();
+
+        return new BaseBookResponse(book);
     }
 }

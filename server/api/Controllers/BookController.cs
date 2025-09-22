@@ -34,8 +34,8 @@ public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBook
     }
     
     [HttpDelete(nameof(DeleteBook))]
-    public Book DeleteBook([FromBody] string id)
+    public async Task<BaseBookResponse> DeleteBook([FromQuery] string id)
     {
-        throw new NotImplementedException();
+        return await bookService.Delete(id);
     }
 }
