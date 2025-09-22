@@ -24,6 +24,7 @@ public class Program
 
         services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
         services.AddScoped<IService<BaseAuthorResponse, CreateAuthorDto, UpdateAuthorDto>, AuthorService>();
+        services.AddScoped<IService<BaseGenreResponse, CreateGenreDto, UpdateGenreDto>, GenreService>();
         
         services.AddProblemDetails();
         

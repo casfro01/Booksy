@@ -1,5 +1,4 @@
-﻿using dataaccess;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using services.Abstractions;
 using services.DTOs.Request;
 using services.DTOs.Response;
