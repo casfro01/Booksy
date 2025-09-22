@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using api.Controllers;
 using dataaccess;
 using Microsoft.EntityFrameworkCore;
 using services.Abstractions;
