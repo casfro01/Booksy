@@ -28,9 +28,9 @@ public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBook
     }
     
     [HttpPut(nameof(UpdateBook))]
-    public Book UpdateBook([FromBody] UpdateBookDto dto)
+    public async Task<BaseBookResponse> UpdateBook([FromBody] UpdateBookDto dto)
     {
-        throw new NotImplementedException();
+        return await bookService.Update(dto);
     }
     
     [HttpDelete(nameof(DeleteBook))]
