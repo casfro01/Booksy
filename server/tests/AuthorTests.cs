@@ -72,6 +72,7 @@ public class AuthorTests(MyDbContext ctx, IService<BaseAuthorResponse, CreateAut
         await Assert.ThrowsAnyAsync<ValidationException>(async () => await service.Update(updatedAuthorDto));
     }
 
+    [Fact]
     public async Task DeleteAuthor_Success()
     {
         var a = CreateAuthor("TestName");
