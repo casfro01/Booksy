@@ -96,6 +96,21 @@ public class AuthorTests(MyDbContext ctx, IService<BaseAuthorResponse, CreateAut
         
     }
 
+    [Fact]
+    public async Task GetAllAuthors()
+    {
+        var a1 = CreateAuthor("TestName");
+        var a2 = CreateAuthor("TestName2");
+        
+        ctx.Authors.Add(a1);
+        ctx.Authors.Add(a2);
+        await ctx.SaveChangesAsync(TestContext.Current.CancellationToken);
+        
+        Assert.Equal(2, ctx.Authors.Count());
+        // fetch
+        var list = await service.Get();
+        Assert.Equal(2, list.Count);
+    }
     private Author CreateAuthor(string name)
     {
         return new Author
