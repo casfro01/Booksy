@@ -53,16 +53,15 @@ public class AuthorService(MyDbContext db) : IService<BaseAuthorResponse, Create
     {
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
-        var author = await db.Authors
-            .Include(a => a.Books)
-            .FirstOrDefaultAsync(a => a.Id == dto.Id);
+        var author = db.Authors.First(a => a.Id == dto.Id);
 
         if (author == null)
             throw new KeyNotFoundException("Author not found");
 
-        author.Name = dto.Name ?? author.Name;
-
-        // opdater book logik her?
+        author.Name = dto.Name;
+        
+        author.Books.Clear();
+        dto.BooksIDs.ForEach(id => author.Books.Add(db.Books.First(b => b.Id == id)));
         
         db.Authors.Update(author);
         await db.SaveChangesAsync();
