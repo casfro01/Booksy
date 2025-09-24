@@ -23,8 +23,8 @@ jobs:
       - name: Build
         run: dotnet build ./server/server.sln --no-restore --configuration Release
       
-      - name: Run
-        run: dotnet run --no-build --configuration Release --project ./server/api/api.csproj
+      #- name: Run
+       # run: dotnet run --no-build --configuration Release --project ./server/api/api.csproj
         
       - name: Test
         run: dotnet test --no-build --verbosity normal
