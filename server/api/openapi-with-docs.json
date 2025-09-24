@@ -115,7 +115,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Author"
+                  "$ref": "#/components/schemas/BaseAuthorResponse"
                 }
               }
             }
@@ -147,7 +147,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Author"
+                  "$ref": "#/components/schemas/BaseAuthorResponse"
                 }
               }
             }
@@ -264,7 +264,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BaseBookResponse"
+                  "$ref": "#/components/schemas/Book"
                 }
               }
             }
@@ -278,65 +278,12 @@
           "Book"
         ],
         "operationId": "Book_DeleteBook",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseBookResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/GetGenre": {
-      "get": {
-        "tags": [
-          "Genre"
-        ],
-        "operationId": "Genre_GetGenre",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BaseGenreResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/CreateGenre": {
-      "post": {
-        "tags": [
-          "Genre"
-        ],
-        "operationId": "Genre_CreateGenre",
         "requestBody": {
-          "x-name": "dto",
+          "x-name": "id",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateGenreDto"
+                "type": "string"
               }
             }
           },
@@ -349,69 +296,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BaseGenreResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/UpdateGenre": {
-      "put": {
-        "tags": [
-          "Genre"
-        ],
-        "operationId": "Genre_UpdateGenre",
-        "requestBody": {
-          "x-name": "dto",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateGenreDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseGenreResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/DeleteGenre": {
-      "delete": {
-        "tags": [
-          "Genre"
-        ],
-        "operationId": "Genre_DeleteGenre",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseGenreResponse"
+                  "$ref": "#/components/schemas/Book"
                 }
               }
             }
@@ -461,25 +346,92 @@
           }
         }
       },
-      "Author": {
+      "UpdateAuthorDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 2
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "booksIDs": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BaseBookResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "name": {
+          "title": {
             "type": "string"
           },
-          "createdat": {
+          "pages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createAt": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "books": {
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorsIDs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Book"
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateBookDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0
+          },
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorsIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }
@@ -550,80 +502,25 @@
           }
         }
       },
-      "UpdateAuthorDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 2
-          }
-        }
-      },
-      "BaseBookResponse": {
+      "Author": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "title": {
+          "name": {
             "type": "string"
           },
-          "pages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "createAt": {
+          "createdat": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
+          "books": {
             "type": "array",
             "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "CreateBookDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "pages": {
-            "type": "integer",
-            "format": "int32",
-            "maximum": 2147483647.0,
-            "minimum": 1.0
-          },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
-            "type": "array",
-            "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/Book"
             }
           }
         }
@@ -638,75 +535,6 @@
           "id": {
             "type": "string",
             "minLength": 2
-          },
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "pages": {
-            "type": "integer",
-            "format": "int32",
-            "maximum": 2147483647.0,
-            "minimum": 1.0
-          },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "BaseGenreResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "createAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        }
-      },
-      "CreateGenreDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "UpdateGenreDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 5
-          },
-          "name": {
-            "type": "string",
-            "minLength": 1
           }
         }
       }

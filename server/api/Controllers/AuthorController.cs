@@ -27,14 +27,14 @@ public partial class AuthorController(IService<BaseAuthorResponse, CreateAuthorD
     }
     
     [HttpPut(nameof(UpdateAuthor))]
-    public Author UpdateAuthor([FromBody] UpdateAuthorDto dto)
+    public async Task<BaseAuthorResponse> UpdateAuthor([FromBody] UpdateAuthorDto dto)
     {
-        throw new NotImplementedException();
+        return await authorService.Update(dto);
     }
     
     [HttpDelete(nameof(DeleteAuthor))]
-    public Author DeleteAuthor([FromBody] string id)
+    public async Task<BaseAuthorResponse> DeleteAuthor([FromBody] string id)
     {
-        throw new NotImplementedException();
+        return await authorService.Delete(id);
     }
 }

@@ -49,13 +49,39 @@ public class AuthorService(MyDbContext db) : IService<BaseAuthorResponse, Create
         return new BaseAuthorResponse(author);
     }
 
-    public Task<BaseAuthorResponse> Update(UpdateAuthorDto dto)
+    public async Task<BaseAuthorResponse> Update(UpdateAuthorDto dto)
     {
-        throw new NotImplementedException();
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+
+        var author = db.Authors.First(a => a.Id == dto.Id);
+
+        if (author == null)
+            throw new KeyNotFoundException("Author not found");
+
+        author.Name = dto.Name;
+        
+        author.Books.Clear();
+        dto.BooksIDs.ForEach(id => author.Books.Add(db.Books.First(b => b.Id == id)));
+        
+        db.Authors.Update(author);
+        await db.SaveChangesAsync();
+
+        return new BaseAuthorResponse(author);
     }
 
-    public Task<BaseAuthorResponse> Delete(string id)
+    public async Task<BaseAuthorResponse> Delete(string id)
     {
-        throw new NotImplementedException();
+        // brug .include herunder hvis bøger også skal slettes senere 
+        var author = await db.Authors.FirstOrDefaultAsync(a => a.Id == id); 
+
+        if (author == null)
+        {
+            throw new KeyNotFoundException("Author not found");
+        }
+
+        db.Authors.Remove(author);
+        await db.SaveChangesAsync();
+        
+        return new BaseAuthorResponse(author); // eller bare return true?
     }
 }
