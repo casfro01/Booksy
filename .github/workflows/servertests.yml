@@ -27,4 +27,4 @@ jobs:
        # run: dotnet run --no-build --configuration Release --project ./server/api/api.csproj
         
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test ./server/server.sln --no-build --verbosity normal
