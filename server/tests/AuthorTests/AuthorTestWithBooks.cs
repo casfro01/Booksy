@@ -44,7 +44,7 @@ public class AuthorTestWithBooks(MyDbContext ctx, IService<BaseAuthorResponse, C
         // test the test ;)
         Assert.Equal(1, ctx.Authors.Count());
         Assert.Equal(2, ctx.Books.Count());
-        Assert.Equal(initialAuthor.Books.First().Id, ctx.Books.First().Id);
+        Assert.Equal(initialAuthor.Books.First().Id, ctx.Books.First(b => b.Authors.First().Id == initialAuthor.Id).Id);
 
         var updateADto = new UpdateAuthorDto
         {
