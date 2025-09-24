@@ -124,7 +124,7 @@ export class AuthorClient {
         return Promise.resolve<BaseAuthorResponse>(null as any);
     }
 
-    updateAuthor(dto: UpdateAuthorDto): Promise<Author> {
+    updateAuthor(dto: UpdateAuthorDto): Promise<BaseAuthorResponse> {
         let url_ = this.baseUrl + "/UpdateAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -144,13 +144,13 @@ export class AuthorClient {
         });
     }
 
-    protected processUpdateAuthor(response: Response): Promise<Author> {
+    protected processUpdateAuthor(response: Response): Promise<BaseAuthorResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Author;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseAuthorResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -158,10 +158,10 @@ export class AuthorClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Author>(null as any);
+        return Promise.resolve<BaseAuthorResponse>(null as any);
     }
 
-    deleteAuthor(id: string): Promise<Author> {
+    deleteAuthor(id: string): Promise<BaseAuthorResponse> {
         let url_ = this.baseUrl + "/DeleteAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -181,13 +181,13 @@ export class AuthorClient {
         });
     }
 
-    protected processDeleteAuthor(response: Response): Promise<Author> {
+    protected processDeleteAuthor(response: Response): Promise<BaseAuthorResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Author;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseAuthorResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -195,7 +195,7 @@ export class AuthorClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Author>(null as any);
+        return Promise.resolve<BaseAuthorResponse>(null as any);
     }
 }
 
@@ -403,11 +403,28 @@ export interface CreateAuthorDto {
     booksIDs?: string[];
 }
 
-export interface Author {
+export interface UpdateAuthorDto {
+    id: string;
+    name?: string | undefined;
+    booksIDs?: string[] | undefined;
+}
+
+export interface BaseBookResponse {
     id?: string;
-    name?: string;
-    createdat?: string | undefined;
-    books?: Book[];
+    title?: string;
+    pages?: number;
+    createAt?: string | undefined;
+    genreid?: string | undefined;
+    description?: string | undefined;
+    authorsIDs?: string[];
+}
+
+export interface CreateBookDto {
+    title?: string;
+    pages?: number;
+    genreid?: string | undefined;
+    description?: string | undefined;
+    authorsIDs?: string[];
 }
 
 export interface Book {
@@ -416,6 +433,7 @@ export interface Book {
     pages?: number;
     createdat?: string | undefined;
     genreid?: string | undefined;
+    description?: string | undefined;
     genre?: Genre | undefined;
     authors?: Author[];
 }
@@ -427,24 +445,11 @@ export interface Genre {
     books?: Book[];
 }
 
-export interface UpdateAuthorDto {
-    id: string;
-}
-
-export interface BaseBookResponse {
+export interface Author {
     id?: string;
-    title?: string;
-    pages?: number;
-    createAt?: string | undefined;
-    genreid?: string | undefined;
-    authorsIDs?: string[];
-}
-
-export interface CreateBookDto {
-    title?: string;
-    pages?: number;
-    genreid?: string | undefined;
-    authorsIDs?: string[];
+    name?: string;
+    createdat?: string | undefined;
+    books?: Book[];
 }
 
 export interface UpdateBookDto {

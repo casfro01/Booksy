@@ -115,7 +115,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Author"
+                  "$ref": "#/components/schemas/BaseAuthorResponse"
                 }
               }
             }
@@ -147,7 +147,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Author"
+                  "$ref": "#/components/schemas/BaseAuthorResponse"
                 }
               }
             }
@@ -346,25 +346,92 @@
           }
         }
       },
-      "Author": {
+      "UpdateAuthorDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 2
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": true
+          },
+          "booksIDs": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BaseBookResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "name": {
+          "title": {
             "type": "string"
           },
-          "createdat": {
+          "pages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createAt": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "books": {
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorsIDs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Book"
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateBookDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0
+          },
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorsIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }
@@ -389,6 +456,10 @@
             "nullable": true
           },
           "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
           },
@@ -431,72 +502,25 @@
           }
         }
       },
-      "UpdateAuthorDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 2
-          }
-        }
-      },
-      "BaseBookResponse": {
+      "Author": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "title": {
+          "name": {
             "type": "string"
           },
-          "pages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "createAt": {
+          "createdat": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
+          "books": {
             "type": "array",
             "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "CreateBookDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "pages": {
-            "type": "integer",
-            "format": "int32",
-            "maximum": 2147483647.0,
-            "minimum": 1.0
-          },
-          "genreid": {
-            "type": "string",
-            "nullable": true
-          },
-          "authorsIDs": {
-            "type": "array",
-            "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/Book"
             }
           }
         }
