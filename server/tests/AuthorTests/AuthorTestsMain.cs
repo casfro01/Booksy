@@ -6,7 +6,7 @@ using services.DTOs.Response;
 
 namespace tests;
 
-public class AuthorTests(MyDbContext ctx, IService<BaseAuthorResponse, CreateAuthorDto, UpdateAuthorDto> service)
+public class AuthorTestsMain(MyDbContext ctx, IService<BaseAuthorResponse, CreateAuthorDto, UpdateAuthorDto> service)
 {
     [Theory]
     [InlineData("A")] // Edge case

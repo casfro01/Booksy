@@ -32,7 +32,8 @@ public class AuthorService(MyDbContext db) : IService<BaseAuthorResponse, Create
         var id = Guid.NewGuid().ToString();
         var name = dto.Name;        
         var time = DateTime.UtcNow;
-        var books = new List<Book>(); // TODO : find books
+        var books = new List<Book>();
+        dto.BooksIDs.ForEach(s => books.Add(db.Books.First(b => b.Id == s)));
 
         // create book
         var author = new Author()
