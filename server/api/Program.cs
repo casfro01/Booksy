@@ -24,6 +24,7 @@ public class Program
 
         services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
         services.AddScoped<IService<BaseAuthorResponse, CreateAuthorDto, UpdateAuthorDto>, AuthorService>();
+        services.AddScoped<IService<BaseGenreResponse, CreateGenreDto, UpdateGenreDto>, GenreService>();
         
         services.AddProblemDetails();
         
@@ -52,7 +53,7 @@ public class Program
         app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
         // config færdig her
-        app.GenerateApiClientsFromOpenApi("/../client/src/LibAPI.ts").GetAwaiter().GetResult();
+        app.GenerateApiClientsFromOpenApi("/../../client/src/LibAPI.ts").GetAwaiter().GetResult();
         
         app.Run();
         

@@ -29,7 +29,9 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
         
         // generate data
-        var authors = new List<Author>(); // TODO : find authors
+        var authors = new List<Author>();
+        dto.AuthorsIDs.ForEach(id => authors.Add(db.Authors.First(a => a.Id == id)));
+        
         var id = Guid.NewGuid().ToString();
         var time = DateTime.UtcNow;
         
@@ -51,13 +53,34 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
         return new BaseBookResponse(book);
     }
 
-    public Task<BaseBookResponse> Update(UpdateBookDto dto)
+    public async Task<BaseBookResponse> Update(UpdateBookDto dto)
     {
-        throw new NotImplementedException();
+        // Validate dto
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        
+        // find book
+        var currentBook = db.Books.First(b => b.Id == dto.Id);
+        
+        // update base information
+        currentBook.Title = dto.Title;
+        currentBook.Pages = dto.Pages;
+        currentBook.Description = dto.Description;
+        
+        // update authors
+        currentBook.Authors.Clear();
+        dto.AuthorsIDs.ForEach(id => currentBook.Authors.Add(db.Authors.First(a => a.Id == id)));
+        
+        await db.SaveChangesAsync();
+        return new BaseBookResponse(currentBook);
     }
 
-    public Task<BaseBookResponse> Delete(string id)
+    public async Task<BaseBookResponse> Delete(string id)
     {
-        throw new NotImplementedException();
+        var book = db.Books.First(b => b.Id == id);
+        db.Books.Remove(book);
+
+        await db.SaveChangesAsync();
+
+        return new BaseBookResponse(book);
     }
 }
