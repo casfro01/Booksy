@@ -1,5 +1,4 @@
-﻿using dataaccess;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using services.Abstractions;
 using services.DTOs.Request;
 using services.DTOs.Response;
@@ -28,14 +27,14 @@ public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBook
     }
     
     [HttpPut(nameof(UpdateBook))]
-    public Book UpdateBook([FromBody] UpdateBookDto dto)
+    public async Task<BaseBookResponse> UpdateBook([FromBody] UpdateBookDto dto)
     {
-        throw new NotImplementedException();
+        return await bookService.Update(dto);
     }
     
     [HttpDelete(nameof(DeleteBook))]
-    public Book DeleteBook([FromBody] string id)
+    public async Task<BaseBookResponse> DeleteBook([FromQuery] string id)
     {
-        throw new NotImplementedException();
+        return await bookService.Delete(id);
     }
 }
