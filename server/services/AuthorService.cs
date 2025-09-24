@@ -11,7 +11,9 @@ public class AuthorService(MyDbContext db) : IService<BaseAuthorResponse, Create
 {
     public Task<List<BaseAuthorResponse>> Get()
     {
-        return db.Authors.Select(a => new BaseAuthorResponse(a)).ToListAsync();
+        return db.Authors
+            .Include(a => a.Books)
+            .Select(a => new BaseAuthorResponse(a)).ToListAsync();
     }
 
     [Obsolete("Find in get authors instead or cached authors in client application, ig")]

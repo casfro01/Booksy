@@ -11,7 +11,9 @@ public class BookService(MyDbContext db) : IService<BaseBookResponse, CreateBook
 {
     public Task<List<BaseBookResponse>> Get()
     {
-        return db.Books.Select(b => new BaseBookResponse(b)).ToListAsync();
+        return db.Books
+            .Include(b => b.Authors)
+            .Select(b => new BaseBookResponse(b)).ToListAsync();
     }
 
     [Obsolete("Find in get books instead or cached books in client application, ig")]

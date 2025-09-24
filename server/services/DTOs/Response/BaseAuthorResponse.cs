@@ -10,7 +10,7 @@ public sealed record BaseAuthorResponse
         Id = a.Id;
         Name = a.Name;
         CreateAt = a.Createdat;
-        BooksIDs = a.Books.Select(b => a.Id).ToList();
+        BooksIDs = a.Books.Select(b => b.Id).ToList();
     }
 
     public string Id { get; set; } = null!;
