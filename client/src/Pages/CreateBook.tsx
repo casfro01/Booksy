@@ -2,6 +2,7 @@
 import { ArrowLeft, Book, User, FileText, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import '../CSS/CreateBook.css';
+import {toast} from "react-hot-toast";
 
 interface FormData {
     title: string;
@@ -33,13 +34,13 @@ export default function CreateBook() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Book created:', formData);
-        alert('Book created successfully!');
+        toast.success("Book created successfully!");
         navigate('/');
     };
 
     const handleSaveDraft = () => {
         console.log('Saving draft:', formData);
-        alert('Draft saved!');
+        toast.success("Draft saved!");
     };
 
     return (
