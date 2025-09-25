@@ -5,13 +5,18 @@ import Homescreen from "./Pages/Homescreen.tsx";
 import CreateBook from './Pages/CreateBook.tsx';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import About from "./Pages/About.tsx";
+import Books from "./Pages/Books.tsx";
+import { useFetchInitialData } from "./FetchData.tsx";
 import {Toaster} from "react-hot-toast";
 
 
 function App() {
-  return (
+    useFetchInitialData();
+
+    return (
     <>
         <header><title>Jens</title></header>
+        
         <RouterProvider router={createBrowserRouter([
             {
                 path: "/",
@@ -23,7 +28,7 @@ function App() {
                 },
                 {
                     path: "/books",
-                    element: <p>books</p>
+                    element: <Books/>
                 },
                 {
                     path: "/create-book", 
@@ -39,7 +44,7 @@ function App() {
         />
         <Toaster position="top-center" reverseOrder={false}/>
     </>
-  )
+    )
 }
 
 export default App
