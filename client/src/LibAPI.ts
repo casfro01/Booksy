@@ -316,7 +316,7 @@ export class BookClient {
         return Promise.resolve<BaseBookResponse>(null as any);
     }
 
-    updateBook(dto: UpdateBookDto): Promise<Book> {
+    updateBook(dto: UpdateBookDto): Promise<BaseBookResponse> {
         let url_ = this.baseUrl + "/UpdateBook";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -336,13 +336,13 @@ export class BookClient {
         });
     }
 
-    protected processUpdateBook(response: Response): Promise<Book> {
+    protected processUpdateBook(response: Response): Promise<BaseBookResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Book;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBookResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -350,20 +350,20 @@ export class BookClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Book>(null as any);
+        return Promise.resolve<BaseBookResponse>(null as any);
     }
 
-    deleteBook(id: string): Promise<Book> {
-        let url_ = this.baseUrl + "/DeleteBook";
+    deleteBook(id: string | undefined): Promise<BaseBookResponse> {
+        let url_ = this.baseUrl + "/DeleteBook?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(id);
-
         let options_: RequestInit = {
-            body: content_,
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -373,13 +373,13 @@ export class BookClient {
         });
     }
 
-    protected processDeleteBook(response: Response): Promise<Book> {
+    protected processDeleteBook(response: Response): Promise<BaseBookResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Book;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBookResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -387,7 +387,162 @@ export class BookClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Book>(null as any);
+        return Promise.resolve<BaseBookResponse>(null as any);
+    }
+}
+
+export class GenreClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    getGenre(): Promise<BaseGenreResponse[]> {
+        let url_ = this.baseUrl + "/GetGenre";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetGenre(_response);
+        });
+    }
+
+    protected processGetGenre(response: Response): Promise<BaseGenreResponse[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseGenreResponse[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseGenreResponse[]>(null as any);
+    }
+
+    createGenre(dto: CreateGenreDto): Promise<BaseGenreResponse> {
+        let url_ = this.baseUrl + "/CreateGenre";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCreateGenre(_response);
+        });
+    }
+
+    protected processCreateGenre(response: Response): Promise<BaseGenreResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseGenreResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseGenreResponse>(null as any);
+    }
+
+    updateGenre(dto: UpdateGenreDto): Promise<BaseGenreResponse> {
+        let url_ = this.baseUrl + "/UpdateGenre";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUpdateGenre(_response);
+        });
+    }
+
+    protected processUpdateGenre(response: Response): Promise<BaseGenreResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseGenreResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseGenreResponse>(null as any);
+    }
+
+    deleteGenre(id: string | undefined): Promise<BaseGenreResponse> {
+        let url_ = this.baseUrl + "/DeleteGenre?";
+        if (id === null)
+            throw new globalThis.Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDeleteGenre(_response);
+        });
+    }
+
+    protected processDeleteGenre(response: Response): Promise<BaseGenreResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseGenreResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseGenreResponse>(null as any);
     }
 }
 
@@ -405,8 +560,8 @@ export interface CreateAuthorDto {
 
 export interface UpdateAuthorDto {
     id: string;
-    name?: string | undefined;
-    booksIDs?: string[] | undefined;
+    name?: string;
+    booksIDs?: string[];
 }
 
 export interface BaseBookResponse {
@@ -427,33 +582,28 @@ export interface CreateBookDto {
     authorsIDs?: string[];
 }
 
-export interface Book {
-    id?: string;
-    title?: string;
-    pages?: number;
-    createdat?: string | undefined;
-    genreid?: string | undefined;
-    description?: string | undefined;
-    genre?: Genre | undefined;
-    authors?: Author[];
-}
-
-export interface Genre {
-    id?: string;
-    name?: string;
-    createdat?: string | undefined;
-    books?: Book[];
-}
-
-export interface Author {
-    id?: string;
-    name?: string;
-    createdat?: string | undefined;
-    books?: Book[];
-}
-
 export interface UpdateBookDto {
     id: string;
+    title?: string;
+    pages?: number;
+    genreid?: string | undefined;
+    description?: string | undefined;
+    authorsIDs?: string[];
+}
+
+export interface BaseGenreResponse {
+    id?: string;
+    name?: string;
+    createAt?: string | undefined;
+}
+
+export interface CreateGenreDto {
+    name?: string;
+}
+
+export interface UpdateGenreDto {
+    id: string;
+    name: string;
 }
 
 export class ApiException extends Error {

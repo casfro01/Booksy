@@ -5,11 +5,16 @@ import Homescreen from "./Pages/Homescreen.tsx";
 import CreateBook from './Pages/CreateBook.tsx';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import About from "./Pages/About.tsx";
+import Books from "./Pages/Books.tsx";
+import { useFetchInitialData } from "./FetchData.tsx";
 
 
 function App() {
-  return (
+    useFetchInitialData();
+
+    return (
     <>
+        
         <RouterProvider router={createBrowserRouter([
             {
                 path: "/",
@@ -21,7 +26,7 @@ function App() {
                 },
                 {
                     path: "/books",
-                    element: <p>books</p>
+                    element: <Books/>
                 },
                 {
                     path: "/create-book", 
@@ -36,7 +41,7 @@ function App() {
         ])}
         />
     </>
-  )
+    )
 }
 
 export default App
