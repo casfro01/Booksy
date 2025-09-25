@@ -3,14 +3,21 @@ import { ArrowLeft, Book, User, FileText, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import '../CSS/CreateBook.css';
 import {toast} from "react-hot-toast";
+import {BookClient, type CreateBookDto} from "../LibAPI.ts";
 
 interface FormData {
     title: string;
     author: string;
-    pages: string;
+    pages: number;
     genre: string;
     description: string;
 }
+
+const prodURL = "http://localhost:5004";
+const dev = "http://localhost:5004";
+const finalURl = false ? prodURL : dev;
+
+const bookClient = new BookClient(finalURl);
 
 export default function CreateBook() {
     const navigate = useNavigate();
@@ -18,7 +25,7 @@ export default function CreateBook() {
     const [formData, setFormData] = useState<FormData>({
         title: '',
         author: '',
-        pages: '',
+        pages: 0,
         genre: '',
         description: ''
     });
@@ -34,6 +41,22 @@ export default function CreateBook() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Book created:', formData);
+        const jens: CreateBookDto = {
+            title: formData.title,
+            pages: formData.pages,
+            genreid: formData.genre, // TODO : giv genre id i stedet
+            description: formData.description,
+            authorsIDs: [formData.author]
+
+        };
+        bookClient.createBook(jens)
+            .then(book => {
+                // TODO : Tilføj til cache ig
+                console.log(book.title)
+            })
+            .catch((error) => {
+            toast.error("Book creation fail: " + error.message);
+        });
         toast.success("Book created successfully!");
         navigate('/');
     };

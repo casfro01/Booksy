@@ -11,6 +11,7 @@ import {Toaster} from "react-hot-toast";
 function App() {
   return (
     <>
+        <header><title>Jens</title></header>
         <RouterProvider router={createBrowserRouter([
             {
                 path: "/",
