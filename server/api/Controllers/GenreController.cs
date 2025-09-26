@@ -6,6 +6,7 @@ using services.DTOs.Response;
 namespace api.Controllers;
 
 [ApiController]
+[Route("api/[Controller]")]
 public class GenreController(IService<BaseGenreResponse, CreateGenreDto, UpdateGenreDto> service) : ControllerBase
 {
     [HttpGet(nameof(GetGenre))]

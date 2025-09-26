@@ -6,7 +6,7 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/GetAuthors": {
+    "/api/Author/GetAuthors": {
       "get": {
         "tags": [
           "Author"
@@ -29,7 +29,7 @@
         }
       }
     },
-    "/GetAuthor": {
+    "/api/Author/GetAuthor": {
       "get": {
         "tags": [
           "Author"
@@ -59,7 +59,7 @@
         }
       }
     },
-    "/CreateAuthor": {
+    "/api/Author/CreateAuthor": {
       "post": {
         "tags": [
           "Author"
@@ -91,7 +91,7 @@
         }
       }
     },
-    "/UpdateAuthor": {
+    "/api/Author/UpdateAuthor": {
       "put": {
         "tags": [
           "Author"
@@ -123,7 +123,7 @@
         }
       }
     },
-    "/DeleteAuthor": {
+    "/api/Author/DeleteAuthor": {
       "delete": {
         "tags": [
           "Author"
@@ -155,7 +155,7 @@
         }
       }
     },
-    "/GetBooks": {
+    "/api/Book/GetBooks": {
       "get": {
         "tags": [
           "Book"
@@ -178,7 +178,7 @@
         }
       }
     },
-    "/GetBook": {
+    "/api/Book/GetBook": {
       "get": {
         "tags": [
           "Book"
@@ -208,7 +208,7 @@
         }
       }
     },
-    "/CreateBook": {
+    "/api/Book/CreateBook": {
       "post": {
         "tags": [
           "Book"
@@ -240,7 +240,7 @@
         }
       }
     },
-    "/UpdateBook": {
+    "/api/Book/UpdateBook": {
       "put": {
         "tags": [
           "Book"
@@ -272,7 +272,7 @@
         }
       }
     },
-    "/DeleteBook": {
+    "/api/Book/DeleteBook": {
       "delete": {
         "tags": [
           "Book"
@@ -302,7 +302,7 @@
         }
       }
     },
-    "/GetGenre": {
+    "/api/Genre/GetGenre": {
       "get": {
         "tags": [
           "Genre"
@@ -325,7 +325,7 @@
         }
       }
     },
-    "/CreateGenre": {
+    "/api/Genre/CreateGenre": {
       "post": {
         "tags": [
           "Genre"
@@ -357,7 +357,7 @@
         }
       }
     },
-    "/UpdateGenre": {
+    "/api/Genre/UpdateGenre": {
       "put": {
         "tags": [
           "Genre"
@@ -389,7 +389,7 @@
         }
       }
     },
-    "/DeleteGenre": {
+    "/api/Genre/DeleteGenre": {
       "delete": {
         "tags": [
           "Genre"

@@ -12,9 +12,9 @@ export function useFetchInitialData() {
   const setGenres = useSetAtom(genresAtom);
 
   useEffect(() => {
-    const authorClient = new AuthorClient("http://localhost:5004");
-    const bookClient = new BookClient("http://localhost:5004");
-    const genreClient = new GenreClient("http://localhost:5004");
+    const authorClient = new AuthorClient();
+    const bookClient = new BookClient();
+    const genreClient = new GenreClient();
 
     authorClient.getAuthors()
       .then((data) => setAuthors(data))
