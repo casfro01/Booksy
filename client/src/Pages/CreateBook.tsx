@@ -5,7 +5,8 @@ import '../CSS/CreateBook.css';
 import {toast} from "react-hot-toast";
 import {BookClient, type CreateBookDto} from "../LibAPI.ts";
 import {booksAtom} from "../States/books.ts";
-import {useAtom} from "jotai";
+import {useAtom, useAtomValue} from "jotai";
+import {genresAtom} from "../States/genres.ts";
 
 interface FormData {
     title: string;
@@ -25,6 +26,7 @@ export default function CreateBook() {
     const navigate = useNavigate();
 
     const [books, setBookAtom] = useAtom(booksAtom)
+    const genres = useAtomValue(genresAtom);
 
     const [formData, setFormData] = useState<FormData>({
         title: '',
@@ -150,20 +152,11 @@ export default function CreateBook() {
                                 className="select-field"
                             >
                                 <option value="">Select genre</option>
-                                <option value="fiction">Fiction</option>
-                                <option value="non-fiction">Non-Fiction</option>
-                                <option value="mystery">Mystery</option>
-                                <option value="romance">Romance</option>
-                                <option value="sci-fi">Science Fiction</option>
-                                <option value="fantasy">Fantasy</option>
-                                <option value="biography">Biography</option>
-                                <option value="history">History</option>
-                                <option value="children">Children's Books</option>
-                                <option value="textbook">Textbook</option>
-                                <option value="cookbook">Cookbook</option>
-                                <option value="self-help">Self Help</option>
-                                <option value="poetry">Poetry</option>
-                                <option value="drama">Drama</option>
+                                {
+                                    genres.map(g => {
+                                        return <option value={g.id}>{g.name}</option>
+                                    })
+                                }
                             </select>
                         </div>
                     </div>
