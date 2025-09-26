@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import '../CSS/CreateBook.css';
 import {toast} from "react-hot-toast";
 import {BookClient, type CreateBookDto} from "../LibAPI.ts";
+import {booksAtom} from "../States/books.ts";
+import {useAtom} from "jotai";
 
 interface FormData {
     title: string;
@@ -21,6 +23,8 @@ const bookClient = new BookClient(finalURl);
 
 export default function CreateBook() {
     const navigate = useNavigate();
+
+    const [books, setBookAtom] = useAtom(booksAtom)
 
     const [formData, setFormData] = useState<FormData>({
         title: '',
@@ -51,8 +55,7 @@ export default function CreateBook() {
         };
         bookClient.createBook(jens)
             .then(book => {
-                // TODO : Tilføj til cache ig
-                console.log(book.title)
+                setBookAtom([...books, book]);
             })
             .catch((error) => {
             toast.error("Book creation fail: " + error.message);
