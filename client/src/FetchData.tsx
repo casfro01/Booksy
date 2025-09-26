@@ -2,7 +2,7 @@ import { useSetAtom } from "jotai";
 import { authorsAtom } from "./States/authors";
 import { booksAtom } from "./States/books";
 import { useEffect } from "react";
-import {AuthorClient, BookClient, GenreClient} from "./LibAPI";
+import {authorClient, bookClient, genreClient} from "./States/api-clients.ts";
 import {genresAtom} from "./States/genres.ts";
 import {toast} from "react-hot-toast";
 
@@ -12,10 +12,6 @@ export function useFetchInitialData() {
   const setGenres = useSetAtom(genresAtom);
 
   useEffect(() => {
-    const authorClient = new AuthorClient();
-    const bookClient = new BookClient();
-    const genreClient = new GenreClient();
-
     authorClient.getAuthors()
       .then((data) => setAuthors(data))
       .catch((err) => toast.error("Error fetching authors", err));
