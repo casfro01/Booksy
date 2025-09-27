@@ -6,6 +6,7 @@ using services.DTOs.Response;
 namespace api.Controllers;
 
 [ApiController]
+[Route("api/[Controller]")]
 public class BookController(IService<BaseBookResponse, CreateBookDto, UpdateBookDto> bookService) : ControllerBase
 {
     [HttpGet(nameof(GetBooks))]

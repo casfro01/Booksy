@@ -7,6 +7,7 @@ import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import About from "./Pages/About.tsx";
 import Books from "./Pages/Books.tsx";
 import { useFetchInitialData } from "./FetchData.tsx";
+import {Toaster} from "react-hot-toast";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 
     return (
     <>
+        <header><title>Jens</title></header>
         
         <RouterProvider router={createBrowserRouter([
             {
@@ -40,6 +42,7 @@ function App() {
             }
         ])}
         />
+        <Toaster position="top-center" reverseOrder={false}/>
     </>
     )
 }

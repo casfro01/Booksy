@@ -18,7 +18,7 @@ export class AuthorClient {
     }
 
     getAuthors(): Promise<BaseAuthorResponse[]> {
-        let url_ = this.baseUrl + "/GetAuthors";
+        let url_ = this.baseUrl + "/api/Author/GetAuthors";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -51,7 +51,7 @@ export class AuthorClient {
     }
 
     getAuthor(id: string | undefined): Promise<BaseAuthorResponse> {
-        let url_ = this.baseUrl + "/GetAuthor?";
+        let url_ = this.baseUrl + "/api/Author/GetAuthor?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -88,7 +88,7 @@ export class AuthorClient {
     }
 
     createAuthor(dto: CreateAuthorDto): Promise<BaseAuthorResponse> {
-        let url_ = this.baseUrl + "/CreateAuthor";
+        let url_ = this.baseUrl + "/api/Author/CreateAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -125,7 +125,7 @@ export class AuthorClient {
     }
 
     updateAuthor(dto: UpdateAuthorDto): Promise<BaseAuthorResponse> {
-        let url_ = this.baseUrl + "/UpdateAuthor";
+        let url_ = this.baseUrl + "/api/Author/UpdateAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -162,7 +162,7 @@ export class AuthorClient {
     }
 
     deleteAuthor(id: string): Promise<BaseAuthorResponse> {
-        let url_ = this.baseUrl + "/DeleteAuthor";
+        let url_ = this.baseUrl + "/api/Author/DeleteAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(id);
@@ -210,7 +210,7 @@ export class BookClient {
     }
 
     getBooks(): Promise<BaseBookResponse[]> {
-        let url_ = this.baseUrl + "/GetBooks";
+        let url_ = this.baseUrl + "/api/Book/GetBooks";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -243,7 +243,7 @@ export class BookClient {
     }
 
     getBook(id: string | undefined): Promise<BaseBookResponse> {
-        let url_ = this.baseUrl + "/GetBook?";
+        let url_ = this.baseUrl + "/api/Book/GetBook?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -280,7 +280,7 @@ export class BookClient {
     }
 
     createBook(dto: CreateBookDto): Promise<BaseBookResponse> {
-        let url_ = this.baseUrl + "/CreateBook";
+        let url_ = this.baseUrl + "/api/Book/CreateBook";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -317,7 +317,7 @@ export class BookClient {
     }
 
     updateBook(dto: UpdateBookDto): Promise<BaseBookResponse> {
-        let url_ = this.baseUrl + "/UpdateBook";
+        let url_ = this.baseUrl + "/api/Book/UpdateBook";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -354,7 +354,7 @@ export class BookClient {
     }
 
     deleteBook(id: string | undefined): Promise<BaseBookResponse> {
-        let url_ = this.baseUrl + "/DeleteBook?";
+        let url_ = this.baseUrl + "/api/Book/DeleteBook?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -402,7 +402,7 @@ export class GenreClient {
     }
 
     getGenre(): Promise<BaseGenreResponse[]> {
-        let url_ = this.baseUrl + "/GetGenre";
+        let url_ = this.baseUrl + "/api/Genre/GetGenre";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -435,7 +435,7 @@ export class GenreClient {
     }
 
     createGenre(dto: CreateGenreDto): Promise<BaseGenreResponse> {
-        let url_ = this.baseUrl + "/CreateGenre";
+        let url_ = this.baseUrl + "/api/Genre/CreateGenre";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -472,7 +472,7 @@ export class GenreClient {
     }
 
     updateGenre(dto: UpdateGenreDto): Promise<BaseGenreResponse> {
-        let url_ = this.baseUrl + "/UpdateGenre";
+        let url_ = this.baseUrl + "/api/Genre/UpdateGenre";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -509,7 +509,7 @@ export class GenreClient {
     }
 
     deleteGenre(id: string | undefined): Promise<BaseGenreResponse> {
-        let url_ = this.baseUrl + "/DeleteGenre?";
+        let url_ = this.baseUrl + "/api/Genre/DeleteGenre?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)

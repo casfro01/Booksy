@@ -6,6 +6,8 @@ using services.DTOs.Request;
 
 namespace api.Controllers;
 
+[ApiController]
+[Route("api/[Controller]")]
 public partial class AuthorController(IService<BaseAuthorResponse, CreateAuthorDto, UpdateAuthorDto> authorService) : ControllerBase
 {
     [HttpGet(nameof(GetAuthors))]

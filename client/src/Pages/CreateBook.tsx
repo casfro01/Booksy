@@ -2,22 +2,80 @@
 import { ArrowLeft, Book, User, FileText, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import '../CSS/CreateBook.css';
+import {toast} from "react-hot-toast";
+import {type BaseAuthorResponse, type BaseBookResponse, type CreateBookDto} from "../LibAPI.ts";
+import {booksAtom} from "../States/books.ts";
+import {useAtom, useAtomValue} from "jotai";
+import {genresAtom} from "../States/genres.ts";
+import {authorClient, bookClient} from "../States/api-clients.ts";
+import {authorsAtom} from "../States/authors.ts";
 
 interface FormData {
     title: string;
     author: string;
-    pages: string;
+    pages: number;
     genre: string;
     description: string;
 }
 
+async function CreateAuthor(authorName: string, authors: BaseAuthorResponse[], setAuthorAtom: CallableFunction): Promise<BaseAuthorResponse | undefined> {
+    await authorClient.createAuthor({name: authorName, booksIDs: []})
+        .then(a => {
+            setAuthorAtom([...authors, a]);
+            toast.success("Author created successfully.");
+            return a
+        })
+        .catch(e => {
+            toast.error("Could not create new author: " + e.message);
+            return undefined;
+        })
+    return undefined;
+}
+
+async function CrateBook(book: CreateBookDto, books: BaseBookResponse[], setBookAtom: CallableFunction) {
+    await bookClient.createBook(book)
+        .then(book => {
+            setBookAtom([...books, book]);
+        })
+        .catch((error) => {
+            toast.error("Book creation fail: " + error.message);
+        });
+}
+
+async function handeBookCreate(formData: FormData, loading: boolean, authors: BaseAuthorResponse[], books: BaseBookResponse[], setLoading: CallableFunction, setAuthorsAtom: CallableFunction, setBookAtom: CallableFunction): Promise<void> {
+    if (loading) return;
+    setLoading(true);
+    // find the author id
+    let possibleAuthor = authors.find(a => a.name == formData.author);
+    if (possibleAuthor == undefined){
+        possibleAuthor = await CreateAuthor(formData.author, authors, setAuthorsAtom);
+    }
+    // if we couldn't create author ig
+    if (possibleAuthor == undefined || possibleAuthor.id == undefined) return
+    // define dto
+    const newBook: CreateBookDto = {
+        title: formData.title,
+        pages: formData.pages,
+        genreid: formData.genre,
+        description: formData.description,
+        authorsIDs: [possibleAuthor.id]
+    };
+    // create book
+    await CrateBook(newBook, books, setBookAtom);
+
+}
+
 export default function CreateBook() {
     const navigate = useNavigate();
+    const [loading, setLoading] = React.useState(false); // just in case
+    const [books, setBookAtom] = useAtom(booksAtom)
+    const genres = useAtomValue(genresAtom);
+    const [authors, setAuthorsAtom] = useAtom(authorsAtom);
 
     const [formData, setFormData] = useState<FormData>({
         title: '',
         author: '',
-        pages: '',
+        pages: 0,
         genre: '',
         description: ''
     });
@@ -33,13 +91,24 @@ export default function CreateBook() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Book created:', formData);
-        alert('Book created successfully!');
-        navigate('/');
+        toast.promise(
+            handeBookCreate(formData, loading, authors, books, setLoading, setAuthorsAtom, setBookAtom), {
+                loading: "Creating book...",
+                success: "Book Created",
+                error: "Couldn't create book"
+            })
+            .then( ()=>{
+            setLoading(false);
+            navigate('/');
+            })
+            .catch( () =>
+                setLoading(false)
+            );
     };
 
     const handleSaveDraft = () => {
         console.log('Saving draft:', formData);
-        alert('Draft saved!');
+        toast.success("Draft saved!");
     };
 
     return (
@@ -77,7 +146,7 @@ export default function CreateBook() {
                         {/* Author */}
                         <div className="input-group">
                             <label className="input-label">
-                                <User className="inline-icon" size={16} />
+                                <User className="inline-icon" size={16}/>
                                 Author *
                             </label>
                             <input
@@ -88,7 +157,18 @@ export default function CreateBook() {
                                 required
                                 className="input-field"
                                 placeholder="Author name"
+                                list="authorsList"
                             />
+                            <datalist id="authorsList">
+                                <option value=""></option>
+                                {
+                                    authors.map(a => {
+                                        // Jeg giver op på at indsætte id'et her - for det virker anderledes end i en select - så jeg søger bare på forfatterens navn i stedet for at finde id'et, og hvis han ikke er der så, laver man en og indsætter id'et i bogen right
+                                        return <option>{a.name}</option>
+                                    })
+                                }
+                            </datalist>
+                            {/*<input onChange={handleInputChange} type="hidden" name="authorID" id="authorsList-hidden"/>*/}
                         </div>
 
                         {/* Pages */}
@@ -123,20 +203,11 @@ export default function CreateBook() {
                                 className="select-field"
                             >
                                 <option value="">Select genre</option>
-                                <option value="fiction">Fiction</option>
-                                <option value="non-fiction">Non-Fiction</option>
-                                <option value="mystery">Mystery</option>
-                                <option value="romance">Romance</option>
-                                <option value="sci-fi">Science Fiction</option>
-                                <option value="fantasy">Fantasy</option>
-                                <option value="biography">Biography</option>
-                                <option value="history">History</option>
-                                <option value="children">Children's Books</option>
-                                <option value="textbook">Textbook</option>
-                                <option value="cookbook">Cookbook</option>
-                                <option value="self-help">Self Help</option>
-                                <option value="poetry">Poetry</option>
-                                <option value="drama">Drama</option>
+                                {
+                                    genres.map(g => {
+                                        return <option value={g.id}>{g.name}</option>
+                                    })
+                                }
                             </select>
                         </div>
                     </div>

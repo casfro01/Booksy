@@ -1,24 +1,28 @@
-// FetchData.tsx
 import { useSetAtom } from "jotai";
 import { authorsAtom } from "./States/authors";
 import { booksAtom } from "./States/books";
 import { useEffect } from "react";
-import { AuthorClient, BookClient } from "./LibAPI";
+import {authorClient, bookClient, genreClient} from "./States/api-clients.ts";
+import {genresAtom} from "./States/genres.ts";
+import {toast} from "react-hot-toast";
 
 export function useFetchInitialData() {
   const setAuthors = useSetAtom(authorsAtom);
   const setBooks = useSetAtom(booksAtom);
+  const setGenres = useSetAtom(genresAtom);
 
   useEffect(() => {
-    const authorClient = new AuthorClient("http://localhost:5004");
-    const bookClient = new BookClient("http://localhost:5004");
-
     authorClient.getAuthors()
       .then((data) => setAuthors(data))
-      .catch((err) => console.error("Error fetching authors", err));
+      .catch((err) => toast.error("Error fetching authors", err));
 
     bookClient.getBooks()
       .then((data) => setBooks(data))
-      .catch((err) => console.error("Error fetching books", err));
-  }, [setAuthors, setBooks]);
+      .catch((err) => toast.error("Error fetching books", err));
+
+    genreClient.getGenre()
+      .then((data) => setGenres(data))
+      .catch((err) => toast.error("Error fetching genres", err));
+  }, [setAuthors, setBooks, setGenres]);
+
 }
