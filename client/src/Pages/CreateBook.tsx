@@ -22,6 +22,7 @@ async function CreateAuthor(authorName: string, authors: BaseAuthorResponse[], s
     await authorClient.createAuthor({name: authorName, booksIDs: []})
         .then(a => {
             setAuthorAtom([...authors, a]);
+            toast.success("Author created successfully.");
             return a
         })
         .catch(e => {
@@ -39,6 +40,29 @@ async function CrateBook(book: CreateBookDto, books: BaseBookResponse[], setBook
         .catch((error) => {
             toast.error("Book creation fail: " + error.message);
         });
+}
+
+async function handeBookCreate(formData: FormData, loading: boolean, authors: BaseAuthorResponse[], books: BaseBookResponse[], setLoading: CallableFunction, setAuthorsAtom: CallableFunction, setBookAtom: CallableFunction): Promise<void> {
+    if (loading) return;
+    setLoading(true);
+    // find the author id
+    let possibleAuthor = authors.find(a => a.name == formData.author);
+    if (possibleAuthor == undefined){
+        possibleAuthor = await CreateAuthor(formData.author, authors, setAuthorsAtom);
+    }
+    // if we couldn't create author ig
+    if (possibleAuthor == undefined || possibleAuthor.id == undefined) return
+    // define dto
+    const newBook: CreateBookDto = {
+        title: formData.title,
+        pages: formData.pages,
+        genreid: formData.genre,
+        description: formData.description,
+        authorsIDs: [possibleAuthor.id]
+    };
+    // create book
+    await CrateBook(newBook, books, setBookAtom);
+
 }
 
 export default function CreateBook() {
@@ -64,31 +88,22 @@ export default function CreateBook() {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Book created:', formData);
-        if (loading) return;
-        setLoading(true);
-        // find the author id
-        let possibleAuthor = authors.find(a => a.name == formData.author);
-        if (possibleAuthor == undefined){
-            possibleAuthor = await CreateAuthor(formData.author, authors, setAuthorsAtom);
-        }
-        // if we couldn't create author
-        if (possibleAuthor == undefined) return
-        // define dto
-        const newBook: CreateBookDto = {
-            title: formData.title,
-            pages: formData.pages,
-            genreid: formData.genre,
-            description: formData.description,
-            authorsIDs: [possibleAuthor.id]
-        };
-        // create book
-        await CrateBook(newBook, books, setBookAtom);
-        toast.success("Book created successfully!");
-        setLoading(false);
-        navigate('/');
+        toast.promise(
+            handeBookCreate(formData, loading, authors, books, setLoading, setAuthorsAtom, setBookAtom), {
+                loading: "Creating book...",
+                success: "Book Created",
+                error: "Couldn't create book"
+            })
+            .then( ()=>{
+            setLoading(false);
+            navigate('/');
+            })
+            .catch( () =>
+                setLoading(false)
+            );
     };
 
     const handleSaveDraft = () => {
@@ -222,10 +237,7 @@ export default function CreateBook() {
                         <button
                             type="submit"
                             className="submit-button"
-                            onClick={() => {
-                                await handleSubmit;
-                                setLoading(false);
-                            }}
+                            onClick={handleSubmit}
                         >
                             Create Book
                         </button>
