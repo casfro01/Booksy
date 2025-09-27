@@ -40,11 +40,14 @@ export default function HomeScreen() {
 
                     {/* Button Grid */}
                     <div className='button-grid'>
-                        {['ABOUT BOOKSY', 'CLASSES OFFERED', 'RENT A BOOK', 'SEND CHILD AWAY'].map((text) => (
+                        {['ABOUT BOOKSY', 'ADD BOOK', 'RENT A BOOK', 'SEND CHILD AWAY'].map((text) => (
                             <button key={text} className='grid-button'
                                 onClick={() => {
-                                    if (text === 'RENT A BOOK') {
+                                    if (text === 'ADD BOOK') {
                                         navigate('/create-book');
+                                    }
+                                    else if (text === 'RENT A BOOK') {
+                                        navigate('/books');
                                     }
                                     else if (text === 'ABOUT BOOKSY') {
                                         navigate('/about');
@@ -57,8 +60,8 @@ export default function HomeScreen() {
                     </div>
 
                     {/* Contact Button */}
-                    <button className='contact-button'>
-                        CONTACT DETAILS
+                    <button className='contact-button' onClick={() => navigate('/authors')}>
+                        AUTHORS
                     </button>
 
                     {/* Social Media Icons */}

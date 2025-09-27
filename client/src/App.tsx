@@ -37,6 +37,10 @@ function App() {
                 {
                     path: "/about",
                     element: <About/>
+                },
+                {
+                    path: "/authors",
+                    element: <About/>
                 }
                 ]
             }
