@@ -47,8 +47,7 @@ export default function AuthorInfo(){
                             currentAuthor.name = e.name
                             setEditMode(false);
                         }).catch(e => {
-                            toast.error("Cound't update author " + e.message);
-                            console.log(e);
+                            toast.error("Couldn't update author " + e.message);
                         })
                     }}
                         className="btn btn-primary w-12" hidden={!editMode}>Save</button>
