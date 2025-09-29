@@ -1,4 +1,4 @@
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import {authorsAtom} from "../States/authors.ts";
 import {useAtom} from "jotai";
 import "../CSS/DaisyUI.css"
@@ -10,16 +10,20 @@ type authorIDParameter = {
 
 export default function AuthorInfo(){
     const params = useParams<authorIDParameter>();
+    const navigator = useNavigate();
 
     const [authors, ] = useAtom(authorsAtom)
 
-    const currentAuthor =authors.find(a => a.id === params.authorID);
+    const currentAuthor = authors.find(a => a.id === params.authorID);
 
     return <>
         <div className="bg-emerald-700 min-h-screen p-6">
             <div className="h-30">
                 <div className="h-10"></div>
-                <div className="grid grid-cols-14 gap-2 w-100"><div className=""></div><button className="btn w-25">Back</button></div>
+                <div className="grid grid-cols-14 gap-2 w-100">
+                    <div></div>
+                    <button className="btn w-25" onClick={() => navigator("/authors")}>Back</button>
+                </div>
             </div>
             {/* Author info section */}
             <div className="hero">
