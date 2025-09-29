@@ -45,7 +45,7 @@ function authorCard(author: BaseAuthorResponse, navigator:NavigateFunction){
         <figure>
             <img
                 className="h-75 w-52"
-                src={getRandomImgAuthor()}
+                src={getRandomImgAuthor(author.id)}
                 alt="Movie" />
         </figure>
         <div className="card-body">
