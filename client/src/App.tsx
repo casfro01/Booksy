@@ -9,6 +9,7 @@ import Books from "./Pages/Books.tsx";
 import { useFetchInitialData } from "./FetchData.tsx";
 import {Toaster} from "react-hot-toast";
 import Authors from "./Pages/AuthorShowcase.tsx";
+import AuthorInfo from "./Pages/AuthorInfo.tsx";
 
 
 export function App() {
@@ -42,6 +43,10 @@ export function App() {
                 {
                     path: "/authors",
                     element: <Authors/>
+                },
+                {
+                    path: "/authors/:authorID",
+                    element: <AuthorInfo/>
                 }
                 ]
             }
