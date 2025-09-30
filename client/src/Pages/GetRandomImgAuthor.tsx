@@ -9,9 +9,9 @@ import a8 from "../assets/AuthorImgs/author8.png";
 import a9 from "../assets/AuthorImgs/author9.png";
 import a10 from "../assets/AuthorImgs/author10.png";
 
-export function getRandomImgAuthor(seed: number = undefined) {
+export function getRandomImgAuthor(seed: string = "") {
     const imgs = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10];
-    const num = seed === undefined  ? Math.random() : mulberry32(stringToSeed(seed));
+    const num = seed === ""  ? Math.random() : mulberry32(stringToSeed(seed));
     return imgs[Math.floor(num * imgs.length)];
 }
 

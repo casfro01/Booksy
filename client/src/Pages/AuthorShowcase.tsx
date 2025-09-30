@@ -1,9 +1,12 @@
 import "../CSS/DaisyUI.css"
 import type {BaseAuthorResponse} from "../LibAPI.ts";
-import {useAtomValue} from "jotai";
 import {authorsAtom} from "../States/authors.ts";
 import {type NavigateFunction, useNavigate} from 'react-router';
 import {getRandomImgAuthor} from "./GetRandomImgAuthor.tsx";
+import deleteImg from "../assets/delete.png";
+import {toast} from "react-hot-toast";
+import {authorClient} from "../States/api-clients.ts";
+import {useState} from "react";
 
 export default function Authors(){
     const authors = useAtomValue(authorsAtom)
@@ -27,7 +30,7 @@ export default function Authors(){
                 authors.map(author => {
                     return (
                         <>
-                        {authorCard(author, navigator)}
+                        {AuthorCard(author, navigator)}
                         <br/>
                         </>
                     )
@@ -38,18 +41,53 @@ export default function Authors(){
     </>
 }
 
+function useRemoveAuthor(author: BaseAuthorResponse){
+    const [, setAuthors] = useAtom(authorsAtom);
 
-function authorCard(author: BaseAuthorResponse, navigator:NavigateFunction){
+    setAuthors(authors =>
+        authors.filter(a => a.id !== author.id));
+}
+
+
+function AuthorCard(author: BaseAuthorResponse, navigator:NavigateFunction){
+    const [notMouseOver, setNotMouseOver] = useState<boolean>(true);
     return <>
-    <div className="card card-side bg-base-100 shadow-sm w-128">
+    <div className="card card-side bg-base-100 shadow-sm w-128"
+         onMouseEnter={() => setNotMouseOver(false)}
+    onMouseLeave={() => setNotMouseOver(true)}>
         <figure>
             <img
                 className="h-75 w-52"
                 src={getRandomImgAuthor(author.id)}
-                alt="Movie" />
+                alt="Author"/>
         </figure>
         <div className="card-body">
-            <div className="h-9"></div>
+            <div className="h-1"></div>
+            <div className="flex justify-end h-9 w-95/100">
+                <img className="h-8 w-8 hoverMouse"
+                src={deleteImg}
+                 hidden={notMouseOver}
+                onClick={async ()=> {
+                    if (confirm("Are you sure you want to delete this author?")) {
+                        if (confirm("Are you REALLY SURE you want to delete " + author.name + "?")) {
+                            if (confirm("Are you 100% sure you want to delete this author?")) {
+                                if (author.id != null) { // altså den er et lille brokkehoved
+                                    let ans: BaseAuthorResponse | null = null;
+                                    await authorClient.deleteAuthor(author.id)
+                                        .then(res =>{
+                                            ans = res;
+                                        })
+                                        .catch(e => toast.error("Unable to delete author: " + e.message));
+                                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                                    useRemoveAuthor(ans);
+                                }
+                                toast.error("Unable to delete author")
+
+                            }
+                        }
+                    }
+                }}/>
+            </div>
             <h2 className="card-title justify-center">{author.name}</h2>
             <p className="flex justify-center">Click the button to explore this author.</p>
             <div className="card-actions">
