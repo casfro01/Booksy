@@ -1,21 +1,22 @@
 import "../CSS/DaisyUI.css"
 import type {BaseAuthorResponse} from "../LibAPI.ts";
 import {authorsAtom} from "../States/authors.ts";
-import {useAtomValue, useAtom} from "jotai";
+import {type SetStateAction, useAtom} from "jotai";
 import {type NavigateFunction, useNavigate} from 'react-router';
 import {getRandomImgAuthor} from "./GetRandomImgAuthor.tsx";
 import deleteImg from "../assets/delete.png";
 import {toast} from "react-hot-toast";
 import {authorClient} from "../States/api-clients.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 
 type AuthorCardProps = { // for at es-lint ikke brokker sig ig
     author: BaseAuthorResponse;
     navigator: NavigateFunction;
+    setAuthors: React.Dispatch<SetStateAction<BaseAuthorResponse[]>>
 };
 
 export default function Authors(){
-    const authors = useAtomValue(authorsAtom)
+    const [authors, setAuthors] = useAtom(authorsAtom)
     const navigator = useNavigate();
 
     return <>
@@ -28,17 +29,19 @@ export default function Authors(){
                 </div>
                 <div className="flex w-1/2">
                     <div className="w-15"></div>
-                    <button className="btn w-35">Become an Author</button>
+                    <button className="btn w-35"
+                            onClick={() => navigator("/create-author")}
+                    >Become an Author</button>
                 </div>
             </div>
             <br/>
             {
                 authors.map(author => {
                     return (
-                        <>
-                        {AuthorCard({author, navigator})}
-                        <br/>
-                        </>
+                        <React.Fragment key={author.id}>
+                            <AuthorCard author={author} navigator={navigator} setAuthors={setAuthors} />
+                            <br/>
+                        </React.Fragment>
                     )
 
                 })
@@ -47,17 +50,8 @@ export default function Authors(){
     </>
 }
 
-function useRemoveAuthor(author: BaseAuthorResponse | null){
-    const [, setAuthors] = useAtom(authorsAtom);
 
-    if (author == null) return;
-
-    setAuthors(authors =>
-        authors.filter(a => a.id !== author.id));
-}
-
-
-function AuthorCard({ author, navigator }: AuthorCardProps){
+function AuthorCard({ author, navigator, setAuthors }: AuthorCardProps){
     const [notMouseOver, setNotMouseOver] = useState<boolean>(true);
     return <>
     <div className="card card-side bg-base-100 shadow-sm w-128"
@@ -76,23 +70,20 @@ function AuthorCard({ author, navigator }: AuthorCardProps){
                 src={deleteImg}
                  hidden={notMouseOver}
                 onClick={async ()=> {
-                    if (confirm("Are you sure you want to delete this author?")) {
-                        if (confirm("Are you REALLY SURE you want to delete " + author.name + "?")) {
-                            if (confirm("Are you 100% sure you want to delete this author?")) {
-                                if (author.id != null) { // altså den er et lille brokkehoved
-                                    let ans: BaseAuthorResponse | null = null;
-                                    await authorClient.deleteAuthor(author.id)
-                                        .then(res =>{
-                                            ans = res;
-                                        })
-                                        .catch(e => toast.error("Unable to delete author: " + e.message));
-                                    // eslint-disable-next-line react-hooks/rules-of-hooks
-                                    useRemoveAuthor(ans);
-                                }
-                                toast.error("Unable to delete author")
-
-                            }
+                    if (
+                        confirm("Are you sure you want to delete this author?") &&
+                        confirm("Are you REALLY SURE you want to delete " + author.name + "?") &&
+                        confirm("Are you 100% sure you want to delete this author?")
+                    ) {
+                        if (author.id != null) {
+                            await authorClient.deleteAuthor(author.id)
+                                .then(res => {
+                                        setAuthors((prev) =>
+                                            prev.filter(a => a.id !== res.id))
+                                    })
+                                .catch(e => toast.error("Cound not create author: " + e.message));
                         }
+                        else toast.error("Unable to delete the author.");
                     }
                 }}/>
             </div>
