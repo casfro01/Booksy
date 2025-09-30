@@ -9,6 +9,11 @@ import {toast} from "react-hot-toast";
 import {authorClient} from "../States/api-clients.ts";
 import {useState} from "react";
 
+type AuthorCardProps = { // for at es-lint ikke brokker sig ig
+    author: BaseAuthorResponse;
+    navigator: NavigateFunction;
+};
+
 export default function Authors(){
     const authors = useAtomValue(authorsAtom)
     const navigator = useNavigate();
@@ -31,7 +36,7 @@ export default function Authors(){
                 authors.map(author => {
                     return (
                         <>
-                        {AuthorCard(author, navigator)}
+                        {AuthorCard({author, navigator})}
                         <br/>
                         </>
                     )
@@ -42,20 +47,22 @@ export default function Authors(){
     </>
 }
 
-function useRemoveAuthor(author: BaseAuthorResponse){
+function useRemoveAuthor(author: BaseAuthorResponse | null){
     const [, setAuthors] = useAtom(authorsAtom);
+
+    if (author == null) return;
 
     setAuthors(authors =>
         authors.filter(a => a.id !== author.id));
 }
 
 
-function AuthorCard(author: BaseAuthorResponse, navigator:NavigateFunction){
+function AuthorCard({ author, navigator }: AuthorCardProps){
     const [notMouseOver, setNotMouseOver] = useState<boolean>(true);
     return <>
     <div className="card card-side bg-base-100 shadow-sm w-128"
          onMouseEnter={() => setNotMouseOver(false)}
-    onMouseLeave={() => setNotMouseOver(true)}>
+        onMouseLeave={() => setNotMouseOver(true)}>
         <figure>
             <img
                 className="h-75 w-52"
