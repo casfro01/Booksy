@@ -1,6 +1,7 @@
 import "../CSS/DaisyUI.css"
 import type {BaseAuthorResponse} from "../LibAPI.ts";
 import {authorsAtom} from "../States/authors.ts";
+import {useAtomValue, useAtom} from "jotai";
 import {type NavigateFunction, useNavigate} from 'react-router';
 import {getRandomImgAuthor} from "./GetRandomImgAuthor.tsx";
 import deleteImg from "../assets/delete.png";
