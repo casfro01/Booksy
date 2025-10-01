@@ -5,7 +5,7 @@ import Homescreen from "./Pages/Homescreen.tsx";
 import CreateBook from './Pages/CreateBook.tsx';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import About from "./Pages/About.tsx";
-import Books from "./Pages/Books.tsx";
+import Books from "./Pages/BookShowcase.tsx";
 import { useFetchInitialData } from "./FetchData.tsx";
 import {Toaster} from "react-hot-toast";
 import Authors from "./Pages/AuthorShowcase.tsx";
