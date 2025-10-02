@@ -9,6 +9,8 @@ import Books from "./Pages/BookShowcase.tsx";
 import { useFetchInitialData } from "./FetchData.tsx";
 import {Toaster} from "react-hot-toast";
 import Authors from "./Pages/AuthorShowcase.tsx";
+import AuthorInfo from "./Pages/AuthorInfo.tsx";
+import CreateAuthor from "./Pages/CreateAuthor.tsx";
 
 
 export function App() {
@@ -36,12 +38,20 @@ export function App() {
                     element: <CreateBook/>
                 },
                 {
+                    path: "/create-author",
+                    element: <CreateAuthor/>
+                },
+                {
                     path: "/about",
                     element: <About/>
                 },
                 {
                     path: "/authors",
                     element: <Authors/>
+                },
+                {
+                    path: "/authors/:authorID",
+                    element: <AuthorInfo/>
                 }
                 ]
             }
