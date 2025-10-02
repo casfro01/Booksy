@@ -7,6 +7,8 @@ import {toast} from "react-hot-toast";
 import {useState} from "react";
 import {authorClient} from "../States/api-clients.ts";
 import type {UpdateAuthorDto} from "../LibAPI.ts";
+import {booksAtom} from "../States/books.ts";
+import {BookCard} from "./BookCard.tsx";
 
 type authorIDParameter = {
     authorID: string;
@@ -17,11 +19,14 @@ export default function AuthorInfo(){
     const navigator = useNavigate();
 
     const [editMode, setEditMode] = useState<boolean>(false)
-    const [newName, setNewName] = useState<boolean>("");
+    const [newName, setNewName] = useState<string>("");
 
     const [authors, ] = useAtom(authorsAtom)
+    const [books, ] = useAtom(booksAtom)
 
     const currentAuthor = authors.find(a => a.id === params.authorID);
+
+    const authorSet = new Set(currentAuthor?.booksIDs);
 
     return <>
         <div className="bg-emerald-700 min-h-screen p-6">
@@ -73,12 +78,14 @@ export default function AuthorInfo(){
             </div>
 
             {/* Books grid */}
-            <div className="grid grid-cols-3 gap-6">
-                {/*books.map(book => (
-                    <div key={book.id}>
-                    {bookCard(book)}
-                    </div>
-                ))*/}
+            <div className="h-15"></div>
+            <div className="grid grid-cols-2 gap-6">
+                {books.map(book => {
+                    if (book.id != null && authorSet.has(book.id)) return (<div key={book.id}>
+                    <BookCard book={book} onReadMore={function(): void {
+                            throw new Error("Function not implemented.");
+                        } }/>
+                    </div>)})}
             </div>
         </div>
     </>

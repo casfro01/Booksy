@@ -1,13 +1,14 @@
-import "../CSS/DaisyUI.css"
+import "../CSS/DaisyUI.css";
 import bookImageTemplate from "../assets/BookImgs/bookImageTemplate.png"
 
-import type { BaseBookResponse } from "../LibAPI.ts";
-import { useAtomValue } from "jotai";
-import { booksAtom } from "../States/books.ts";
-import { useNavigate } from 'react-router';
-import { useState } from "react";
-import { authorsAtom } from "../States/authors.ts";
-import { genresAtom } from "../States/genres.ts";
+import type {BaseBookResponse} from "../LibAPI.ts";
+import {useAtomValue} from "jotai";
+import {booksAtom} from "../States/books.ts";
+import {useNavigate} from 'react-router';
+import {useState} from "react";
+import {authorsAtom} from "../States/authors.ts";
+import {genresAtom} from "../States/genres.ts";
+import {BookCard} from "./BookCard.tsx";
 
 export default function BooksShowcase() {
 	const [toastMsg, setToastMsg] = useState<string | null>(null);
@@ -32,7 +33,7 @@ export default function BooksShowcase() {
 				<div className="grid grid-cols-3 gap-6">
 					{books.map(book => (
 						<div key={book.id}>
-							{bookCard(book, () => setSelectedBook(book))}
+                            <BookCard book={book} onReadMore={() => setSelectedBook(book)}/>
 						</div>
 					))}
 				</div>
@@ -55,7 +56,7 @@ export default function BooksShowcase() {
 						<div className="flex gap-8 px-4">
 							<img
 								className="w-40 h-60 !ml-2"
-								src={getBookImg()}
+								src={bookImageTemplate}
 								alt="Book Cover"
 							/>
 
@@ -110,30 +111,3 @@ export default function BooksShowcase() {
 	)
 }
 
-function getBookImg() {
-	return bookImageTemplate;
-}
-
-function bookCard(book: BaseBookResponse, onReadMore: () => void) {
-	return (
-		<div className="card card-side bg-base-100 shadow-sm w-128">
-			<figure>
-				<img
-					className="h-75 w-52"
-					src={getBookImg()}
-					alt="Book Cover"
-				/>
-			</figure>
-			<div className="card-body">
-				<div className="h-4"></div>
-				<h2 className="card-title justify-center">{book.title}</h2>
-				<p className="flex justify-center line-clamp-3">{book.description || "No description available."}</p>
-				<div className="card-actions">
-					<div className="w-45"></div>
-					<button className="btn btn-primary w-25" onClick={onReadMore}>Read more</button>
-				</div>
-				<div className="h-1"></div>
-			</div>
-		</div>
-	)
-}
