@@ -6,7 +6,7 @@ import {getRandomImgAuthor} from "./GetRandomImgAuthor.tsx";
 import {toast} from "react-hot-toast";
 import {useState} from "react";
 import {authorClient} from "../States/api-clients.ts";
-import type {BaseBookResponse, UpdateAuthorDto} from "../LibAPI.ts";
+import type {BaseAuthorResponse, BaseBookResponse, UpdateAuthorDto} from "../LibAPI.ts";
 import {booksAtom} from "../States/books.ts";
 import {BookCard} from "./BookCard.tsx";
 import bookImageTemplate from "../assets/BookImgs/bookImageTemplate.png";
@@ -70,7 +70,7 @@ export default function AuthorInfo(){
                     <img
                         src={getRandomImgAuthor(currentAuthor?.id)}
                         className="max-h-98 max-w-sm rounded-lg shadow-2xl"
-                    />
+                     alt="Author image"/>
                     <div>
                         <h1 hidden={editMode} className="text-5xl font-bold text-white">{currentAuthor?.name}</h1>
                         <input hidden={!editMode} className="text-5xl text-white" placeholder={currentAuthor?.name} onChange={e => setNewName(e.target.value)} />
@@ -86,12 +86,39 @@ export default function AuthorInfo(){
             {/* Books grid */}
             <div className="flex h-25 w-10/100 justify-end items-center">
                 <details className="dropdown">
-                    <summary className="btn m-1 w-11">+ Book</summary>
+                    <summary className="btn m-1 w-11 btn-success">+ Book</summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                         {
                             books.map(b => {
-                                if (b.id != null && !authorSet.has(b.id)) {
-                                    return (<li key={b.id}><a>{b.title}</a></li>)
+                                if (b.id != null && !authorSet.has(b.id) && currentAuthor != null) {
+                                    return (<li onClick={async () => {
+                                        const value = await updateAuthorWithBooks(currentAuthor, b.id as string, true)
+                                        const index = authors.findIndex(a => a.id === value.id);
+                                        if (index > -1) authors[index] = value;
+                                        window.location.reload(); // kan ikke lige finde på en bedre løsning wuhu for frontend TODO : måske finde en bedre løsning + ikke så meget dupe-kode
+                                    }}
+                                                key={b.id}><a>{b.title}</a></li>)
+                                }
+                            })
+                        }
+                    </ul>
+                </details>
+
+                <div className="w-6"></div>
+
+                <details className="dropdown">
+                    <summary className="btn m-1 w-11 btn-error">— Book</summary>
+                    <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                        {
+                            books.map(b => {
+                                if (b.id != null && authorSet.has(b.id) && currentAuthor != null) {
+                                    return (<li onClick={async () => {
+                                        const value = await updateAuthorWithBooks(currentAuthor, b.id as string, false)
+                                        const index = authors.findIndex(a => a.id === value.id);
+                                        if (index > -1) authors[index] = value;
+                                        window.location.reload(); // kan ikke lige finde på en bedre løsning wuhu for frontend TODO : måske finde en bedre løsning + ikke så meget dupe-kode
+                                    }}
+                                                key={b.id}><a>{b.title}</a></li>)
                                 }
                             })
                         }
@@ -109,7 +136,7 @@ export default function AuthorInfo(){
         </div>
 
 
-        {/*TODO: Flyt ind i sin egen fil, da dette er duplikeret lol*/}
+        {/*TODO: Flyt ind i sin egen fil, da dette er duplikeret lol - kunne også bruge fragments?*/}
         {selectedBook && (
             <dialog id="book_modal" className="modal modal-open">
                 <div className="modal-box max-w-3xl relative pb-8">
@@ -179,4 +206,26 @@ export default function AuthorInfo(){
             </dialog>
         )}
     </>
+}
+
+
+async function updateAuthorWithBooks(author: BaseAuthorResponse, bookID: string, add: boolean): Promise<BaseAuthorResponse> {
+    if (author == null || author.id == null) throw new Error("Author ID is required");
+
+    const newAuthor = {...author};
+    if (add)
+        newAuthor.booksIDs = newAuthor.booksIDs != null ? [...newAuthor.booksIDs, bookID] : [bookID];
+    else newAuthor.booksIDs = newAuthor.booksIDs?.filter(b => b != bookID);
+
+    const updateDTO: UpdateAuthorDto = {id: author.id, name: newAuthor.name, booksIDs: newAuthor.booksIDs}
+    await authorClient.updateAuthor(updateDTO)
+        .then(res => {
+            toast.success("Updated author")
+            return res;
+        })
+        .catch(e => {
+            toast.error("Cound not update author: " + e.message);
+            throw new Error("Cound not update author: " + e.message);
+        });
+    return author; // dette gør lint glad
 }
