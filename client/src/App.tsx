@@ -5,12 +5,16 @@ import Homescreen from "./Pages/Homescreen.tsx";
 import CreateBook from './Pages/CreateBook.tsx';  
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import About from "./Pages/About.tsx";
-import Books from "./Pages/Books.tsx";
+import Books from "./Pages/BookShowcase.tsx";
 import { useFetchInitialData } from "./FetchData.tsx";
 import {Toaster} from "react-hot-toast";
+import Authors from "./Pages/AuthorShowcase.tsx";
+import AuthorInfo from "./Pages/AuthorInfo.tsx";
+import CreateAuthor from "./Pages/CreateAuthor.tsx";
+
 import Child from "./Pages/Child.tsx";
 
-function App() {
+export function App() {
     useFetchInitialData();
 
     return (
@@ -35,17 +39,25 @@ function App() {
                     element: <CreateBook/>
                 },
                 {
+                    path: "/create-author",
+                    element: <CreateAuthor/>
+                },
+                {
                     path: "/about",
                     element: <About/>
                 },
                 {
                     path: "/authors",
-                    element: <About/>
+                    element: <Authors/>
                 },
-                    {
-                        path: "/send-child",
-                        element: <Child/>
-                    }
+                {
+                    path: "/authors/:authorID",
+                    element: <AuthorInfo/>
+                },
+                {
+                    path: "/send-child",
+                    element: <Child/>
+                }
                 ]
             }
         ])}
@@ -55,4 +67,4 @@ function App() {
     )
 }
 
-export default App
+

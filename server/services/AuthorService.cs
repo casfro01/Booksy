@@ -61,6 +61,8 @@ public class AuthorService(MyDbContext db) : IService<BaseAuthorResponse, Create
         if (author == null)
             throw new KeyNotFoundException("Author not found");
 
+        await db.Entry(author).Collection(e => e.Books).LoadAsync();
+        
         author.Name = dto.Name;
         
         author.Books.Clear();
