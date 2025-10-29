@@ -52,6 +52,9 @@ export default function HomeScreen() {
                                     else if (text === 'ABOUT BOOKSY') {
                                         navigate('/about');
                                     }
+                                    else if (text === 'SEND CHILD AWAY') {
+                                        navigate('/send-child');
+                                    }
                             }}
                                 >
                                 {text}

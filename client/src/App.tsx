@@ -8,7 +8,7 @@ import About from "./Pages/About.tsx";
 import Books from "./Pages/Books.tsx";
 import { useFetchInitialData } from "./FetchData.tsx";
 import {Toaster} from "react-hot-toast";
-
+import Child from "./Pages/Child.tsx";
 
 function App() {
     useFetchInitialData();
@@ -41,7 +41,11 @@ function App() {
                 {
                     path: "/authors",
                     element: <About/>
-                }
+                },
+                    {
+                        path: "/send-child",
+                        element: <Child/>
+                    }
                 ]
             }
         ])}
