@@ -12,6 +12,7 @@ import Authors from "./Pages/AuthorShowcase.tsx";
 import AuthorInfo from "./Pages/AuthorInfo.tsx";
 import CreateAuthor from "./Pages/CreateAuthor.tsx";
 
+import Child from "./Pages/Child.tsx";
 
 export function App() {
     useFetchInitialData();
@@ -52,6 +53,10 @@ export function App() {
                 {
                     path: "/authors/:authorID",
                     element: <AuthorInfo/>
+                },
+                {
+                    path: "/send-child",
+                    element: <Child/>
                 }
                 ]
             }
